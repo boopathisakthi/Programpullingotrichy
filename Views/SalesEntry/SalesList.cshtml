@@ -1,0 +1,352 @@
+﻿@model WebApp.Models.Sales.SalesEntryModels
+
+
+@{
+    ViewBag.Title = "SaleEntry";
+}
+
+
+
+
+
+<div class="row">
+    <div class="col-xl-12 saleslist">
+        <div class="card m-t-30">
+            <div class="card-heading bg-white">
+                <h3 class="card-title ">Sales List</h3>
+                <div class="fa-pull-right panel-btns">
+
+                    <button type="button" style="margin-top:-30px;" onclick="show()" class="btn btn-secondary waves-effect btn-sm" data-toggle="modal" data-target="#con-close-modal1"><i class="fa fa-plus"></i>&nbsp;AddNew</button>
+
+                  
+                </div>
+            </div>
+
+            <div class="card-body ">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <select id="searchby" class="form-control">
+                                    <option value="invoiceno">Invoice No</option>
+                                    <option value="entrydate">Entry Date</option>
+                                    <option value="customername">Dealer Name</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+
+                            <input type="text" id="searchtext" name="example-input1-group2" class="form-control" placeholder="Search...">
+                            <span class="input-group-prepend">
+                                <button type="button" id="btnSearch" class="btn waves-effect waves-light btn-info"><i class="fas fa-search"></i></button>
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 table-responsive">
+                        <table id="Gvlist" class="table m-0 table-sm table-colored-bordered table-bordered-info" style="border-collapse: collapse; border-spacing: 0; width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>Sno</th>
+                                    <th>Invoiceno</th>
+                                    <th>Entrydate</th>
+                                    <th>Dealer Name</th>
+                                  
+                                    <th>total</th>
+                                    <th>Balance</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-12 salesentry">
+
+
+        <input type="hidden" id="hfimg" />
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <div class="card m-t-30">
+                    <div class="card-heading">
+                        <h3 class="card-title">Sales Entry</h3>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            @using (Html.BeginForm("Index", null, FormMethod.Post, new { name = "frm", id = "frm" }))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+
+                                            <label class="control-label">Invoice No:</label>
+                                            <div class="input-group">
+                                                <h3><label id="lblinvoiceno" class="text-purple m-b-0"></label></h3>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+
+                                            <label class="control-label">EntryDate:</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control  datepicker-autoclose clear" placeholder="mm/dd/yyyy" id="txtentrydate">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-custom text-white b-0"><i class="mdi mdi-calendar"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Dealer:</label>
+                                            <select id="ddlcustomer" class="product form-control">
+                                                <option value="0">Customer</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Description:</label>
+                                            <input type="text" id="txtdesc" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Tax Type:</label>
+                                            <select id="ddltaxtype" onchange="Cal_Amount()" class="form-control">
+                                                <option value="Exclusive">Exclusive</option>
+                                                <option value="Inclusive">Inclusive</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12  table-responsive">
+                                        <table id="detailsTable" class="table m-0 table-colored-bordered table-bordered-info" style="border-collapse: collapse; border-spacing: 0; width:100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.no</th>
+                                                    <th style="width:146px">Type</th>
+                                                    <th style="width:200px">Name</th>
+                                                    <th style="width:140px">HSN Code</th>
+                                                    <th style="width:140px">Sales Price</th>
+                                                    <th>Qty</th>
+                                                    <th>Amount</th>
+                                                    <th>Del</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="trbody">
+                                                    <td class="sno">1</td>
+                                                    <td>
+                                                        <div class="form-group">
+
+                                                            <select onchange="getdropdown(this)" class="form-control  ddltype">
+                                                                <option value="System">System</option>
+                                                                <option value="Spare">Spare</option>
+
+
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="hidden" id="hfdetailsysid" class="hfdetailsysid  form-control" />
+                                                            <input type="hidden" class="hftaxid  form-control" />
+                                                            <input type="hidden" class="hftaxname  form-control" />
+                                                            <input type="hidden" class="hftaxamount  form-control" />
+                                                            <select onchange="getsparedetail(this)" class="form-control  ddlspare"></select>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" disabled="disabled" class="hsncode numeric textrequired form-control" />
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" onblur="Cal_Amount()" onkeypress="return isNumber(event,this)" class="salesprice decimal textrequired form-control" />
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="hidden" class="hfoldqty" />
+                                                            <input type="text" id="qty" onblur="Cal_Amount()" onkeypress="return isNumber(event,this)" class="qty numerickey textrequired form-control" />
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" disabled="disabled"  style="background-color:#fff" class="amount textrequired form-control" />
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <button type='button'
+                                                                value='Delete' class="btn btn-icon btn-danger del">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                        <span class='label  lbldel' style='display: none;'>Deleted</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="8">
+                                                        <div class="fa-pull-right">
+                                                            <button type="button" id="InsertRow" class="btn btn-sm btn-success Footer" onclick="Add_Rows()"><i class="fa fa-plus-circle"></i>&nbsp;Add Item</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                                <br />
+
+                                <div class="row">
+
+                                    <div class="col-md-4">
+                                        <div class="gstdetails">
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">Total:</label>
+                                            <input type="text" style="background-color:#fff" disabled="disabled" id="txttotal" class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">Roundoff:</label>
+                                            <div class="input-group">
+                                                <div class="input-group-btn">
+                                                  <select id="ddlroundoff_type" onchange="Cal_Roundoff()" class="form-control btn-primary">
+                                                      <option value="plus">+</option>
+                                                      <option value="negative">-</option>
+                                                  </select>
+                                                   
+                                                </div>
+                                                <input type="text" id="txtroundoff" onblur="Cal_Roundoff()" value="0" class="form-control" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <table id="tblpayment" class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Mode</th>
+                                                    <th>Amount</th>
+                                                    <th>Description</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <select class="form-control ddltype">
+                                                            <option value="Cash">Cash</option>
+                                                            <option value="Card">Card</option>
+                                                            <option value="UPI">UPI</option>
+                                                        </select>
+                                                        <input type="hidden" class="hfpaymentid">
+                                                    </td>
+
+                                                    <td>
+                                                        <input type="text" onblur="Cal_Balance()" value="0"
+                                                               class="form-control payamount decimal">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" value="0"
+                                                               class="form-control description">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="3">
+                                                        <div class="fa-pull-right">
+                                                            <button type="button" id="InsertRow"
+                                                                    class="btn btn-sm btn-success Footer"
+                                                                    onclick="Add_paymentRow()">
+                                                                <i class="fa fa-plus-circle"></i>&nbsp;Add Item
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                               
+                                                <div class="form-group">
+                                                    <label class="control-label">Payed Amount:</label>
+                                                    <input type="text" style="background-color:#fff" disabled="disabled" id="txtpayamount" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+
+                                                <div class="form-group">
+                                                    <label class="control-label">Balance:</label>
+                                                    <input type="text" style="background-color:#fff" disabled="disabled" id="lblbalance" class="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" id="hfsysid" />
+                                <input type="hidden" id="hf_balancepayment" />
+                              <input type="hidden" id="hftotal" />
+                                <br />
+                                <div class="text-center">
+                                    <button type="button" onclick="saveprocess()" id="btnsave" class="btn btn-success btn-rounded w-md waves-effect waves-light m-b-5"><i class="fa fa-save"></i>&nbsp;Save</button>
+                                    <button type="button" onclick="closedata()" class="btn btn-warning  btn-rounded w-md waves-effect waves-light m-b-5"><i class="fas fa-quidditch"></i>&nbsp;Close</button>
+
+                                </div>
+
+
+
+                            }
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <script src="~/Pagescripts/Sales/SaleEntry.js"></script>
+    <script src="~/Pagescripts/keyrestrict.js"></script>
+}
+
+
+
+

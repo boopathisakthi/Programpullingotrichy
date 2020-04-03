@@ -1,0 +1,105 @@
+﻿@model WebApp.Models.Master.expensemasterModels
+@{
+    ViewBag.Title = "expansemaster";
+}
+
+<div class="row">
+    <div class="col-xl-4">
+        <div class="card m-t-30">
+            <div class="card-heading bg-info">
+                <h3 class="card-title text-white">Expense Entry</h3>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "frm", id = "frm" }))
+                {
+                    <div class="row">
+
+                        <input type="hidden" id="hfsysid" />
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="label-control">Expense</label>
+                                @Html.TextBoxFor(model => model.Expanse, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Expanse, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="label-control">Description</label>
+                                @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group text-center">
+
+                                <button type="submit" onclick="return Add()" class="btn btn-success  btn-rounded w-md waves-effect waves-light m-b-5"><i class="fa fa-save"></i>&nbsp;Save</button>
+                                <button type="button" onclick="cleardata()" class="btn btn-warning  btn-rounded w-md waves-effect waves-light m-b-5"><i class="fas fa-quidditch"></i>&nbsp;clear</button>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                }
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-8">
+        <div class="card m-t-30">
+            <div class="card-heading bg-white">
+                <h3 class="card-title ">Expense List</h3>
+            </div>
+            <div class="card-body ">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <select id="searchby" class="form-control">
+                                    <option value="expansename">Expanse</option>
+                                    <option value="description">Description</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+
+                            <input type="text" id="searchtext" name="example-input1-group2" class="form-control" placeholder="Search...">
+                            <span class="input-group-prepend">
+                                <button type="button" id="btnSearch" class="btn waves-effect waves-light btn-info"><i class="fas fa-search"></i></button>
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 table-responsive">
+                        <table id="Gvlist" class="table m-0 table-sm table-colored-bordered table-bordered-info" style="border-collapse: collapse; border-spacing: 0; width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>Sno</th>
+                                    <th>Expense Name</th>
+                                    <th>Descriptionth>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Pagescripts/Master/Masterexense.js"></script>
+}

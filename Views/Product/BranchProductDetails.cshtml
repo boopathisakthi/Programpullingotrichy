@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewBag.Title = "BranchProductDetails";
+}
+
+
+
+<div class="row">
+    <div class="col-xl-12">
+
+        <div class="card m-t-30">
+            <div class="card-heading ">
+                <h3 class="card-title ">Branch Product Details</h3>
+                <div class="fa-pull-right panel-btns">
+                    @*<button type="button" style="margin-top:-30px;" onclick="cleardata()" class="btn btn-secondary waves-effect btn-sm" data-toggle="modal" data-target="#con-close-modal1"><i class="fa fa-plus"></i>&nbsp;AddNew</button>*@
+
+                    <button type="button" style="margin-top:-30px;" class="btn btn-secondary waves-effect btn-sm" data-toggle="modal" data-target="#con-close-modal"><i class="fa fa-plus"></i>&nbsp;Bulk Upload</button>
+                </div>
+            </div>
+            <div class="card-body">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="con-close-modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title mt-0">Bulk Upload</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                    <h3><label id="wait" class="text-danger text-center">Please Wait ....</label></h3>
+                </div>
+                <div id="FileBrowse">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mt-4">
+                                <h4 class="header-title m-t-0 m-b-20">Pick Your File</h4>
+                                <input type="file" id="Fileupload" class="dropify" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+
+                        <div id="progressbar-5">
+                            <div class="progress-label">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer ">
+               
+                <a href="~/App_Files/Samble Excels/Product Upload.xlsx"  data-tagle="Samble Download" class="btn btn-icon waves-effect btn-secondary "><i class="ion ion-md-arrow-round-down"></i></a>
+               
+                <button type="submit" onclick="return Uploadbulkexcelbranch()" class="btn btn-info waves-effect waves-light">Upload</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Pagescripts/Product/Product.js"></script>
+}

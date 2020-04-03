@@ -1,0 +1,210 @@
+﻿
+@{
+    ViewBag.Title = "PaymentIndex";
+}
+
+
+
+<div class="row">
+    <div class="col-xl-12 paymentlist">
+        <div class="card m-t-30">
+            <div class="card-heading bg-white">
+                <h3 class="card-title ">Balance Payment List</h3>
+                <div class="fa-pull-right panel-btns">
+
+                    <button type="button" style="margin-top:-30px;" onclick="show()" class="btn btn-secondary waves-effect btn-sm" data-toggle="modal" data-target="#con-close-modal1"><i class="fa fa-plus"></i>&nbsp;AddNew</button>
+
+
+                </div>
+            </div>
+
+            <div class="card-body ">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <select id="ddlcustomersupplier" onchange="LoadData()" class="form-control">
+                                <option value="customer">Customer</option>
+                                <option value="supplier">Supplier</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <select id="searchby" class="form-control">
+                                    <option value="billno">Bill No</option>
+                                    <option value="billdate">Bill Date</option>
+                                    <option value="Name">Name</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div class="col-md-4">
+                        <div class="input-group">
+
+                            <input type="text" id="searchtext" name="example-input1-group2" class="form-control" placeholder="Search...">
+                            <span class="input-group-prepend">
+                                <button type="button" id="btnSearch" class="btn waves-effect waves-light btn-info"><i class="fas fa-search"></i></button>
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 table-responsive">
+                        <table id="Gvlist" class="table m-0 table-sm table-colored-bordered table-bordered-info" style="border-collapse: collapse; border-spacing: 0; width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>Sno</th>
+                                    <th>Bill No</th>
+                                    <th>Bill Date</th>
+                                    <th>Name</th>
+                                    <th>Paid Amount</th>
+                                    <th>Pay Mode</th>
+                                    <th>View</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-12 paymententry">
+
+
+        <input type="hidden" id="hfimg" />
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <div class="card m-t-30">
+                    <div class="card-heading">
+                        <h3 class="card-title">Bill Payment Entry</h3>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            @using (Html.BeginForm("Index", null, FormMethod.Post, new { name = "frm", id = "frm" }))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+
+                                            <label class="control-label">Bill No:</label>
+                                            <div class="input-group">
+                                                <h3><label id="lblbillno" class="text-purple m-b-0"></label></h3>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+
+                                            <label class="control-label">EntryDate:</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control  datepicker-autoclose clear" placeholder="mm/dd/yyyy" id="txtentrydate">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text bg-custom text-white b-0"><i class="mdi mdi-calendar"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Type:</label>
+                                            <select id="ddltype" onchange="CusSubDropdownBind()" class="product form-control">
+                                                <option value="customer">Dealer</option>
+                                                <option value="supplier">Supplier</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Name:</label>
+                                            <select id="ddldropdwon" onchange="GetBalanceDetails()" class="form-control">
+                                             
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Paid From:</label>
+                                            <select id="ddlpaidfrom"  class="form-control">
+                                                <option value="cash">cash</option>
+                                                <option value="bank">bank</option>
+                                                <option value="online">online</option>
+                                                <option value="others">others</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Paid Amount:</label>
+                                            <input type="text" onblur="Closing_Purchase()" id="txtpaidamount" class="form-control decimal" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Description:</label>
+                                            <input type="text" id="txtdescription" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            
+
+                                <input type="hidden" id="hfsysid" />
+                                <div class="transactiondetails  table-responsive col-md-8">
+                                    <table class="table" id="paymentdetails">
+                                        <thead>
+                                            <tr>
+                                                <th>Sno</th>
+                                                <th></th>
+                                                <th>Date</th>
+                                                <th>Transaction description</th>
+                                                <th>payment</th>
+                                                <th>Balance</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="trbody"></tbody>
+                                    </table>
+                                </div>
+
+                                <br />
+                                <div class="text-center">
+                                    <button type="button" onclick="saveprocess()" id="btnsave" class="btn btn-success btn-rounded w-md waves-effect waves-light m-b-5"><i class="fa fa-save"></i>&nbsp;Save</button>
+                                    <button type="button" onclick="closedata()" class="btn btn-warning  btn-rounded w-md waves-effect waves-light m-b-5"><i class="fas fa-quidditch"></i>&nbsp;Close</button>
+
+                                </div>
+
+
+
+                            }
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <script src="~/Pagescripts/Payment/payment.js"></script>
+    <script src="~/Pagescripts/keyrestrict.js"></script>
+}

@@ -1,0 +1,290 @@
+﻿@model WebApp.Models.CustomerModels
+@{
+
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card m-t-30">
+            <div class="card-heading bg-info">
+
+                <h3 class="card-title text-white">User List</h3>
+               @Html.HiddenFor(m => m.SysId, new { @id = "hfsysid" })
+            </div>
+            <div class="card-body">
+@using (Html.BeginForm(null, null, FormMethod.Post, new { name = "frm", id = "frm" }))
+{
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+
+                            <label class="control-label">Name</label>
+                         <input type="text" id="txtname" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Mobile</label>
+                            <input type="text" id="txtmobile" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Address</label>
+                            <input type="text" id="txtaddress" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <br />
+
+                    <table id="detailsTable" class="table m-0 table-colored-bordered table-bordered-success">
+                        <thead>
+                            <tr>
+                                <th>S.no</th>
+                                <th>ProductName</th>
+                                <th>Rate</th>
+                                <th>Qty</th>
+                                <th>Total</th>
+                                <th>Del</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="trbody">
+                                <td class="sno">1</td>
+                               
+                                <td>
+                                    <input type="hidden" id="hfdetailsysid" class="hfdetailsysid" />
+                                  
+                                    <input type="text" id="productname" class="productname" />
+                                </td>
+                                <td>
+                                    <input type="text" id="rate" class="rate" />
+
+                                </td>
+                                <td>
+                                    <input type="text" id="qty" class="qty" />
+                                </td>
+                                <td>
+                                    <input type="text" id="total" class="total" />
+                                    <input type="hidden" id="hfdetailsysid" class="hfdetailsysid" />
+                                </td>
+                                <td>
+                                    @*<button type="button" class="btndelete btn btn-icon waves-effect btn-white m-b-5" value="Delete" onclick="Delete(this)"><i class="fas fa-trash-alt"></i></button>
+                                    <input type="hidden" class="hfdel" id="hfdeletevalue" value="delete" />*@
+                                    <button type='button' value='Delete' class="btn btn-icon btn-danger del"><i class="fas fa-trash-alt"></i></button>
+                                    <span class='label  lbldel' style='display: none;'>Deleted</span>
+                                </td>
+                            </tr>
+
+
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="10">
+                                    <div class="pull-right">
+                                        <button type="button" id="InsertRow" class="btn btn-sm btn-success Footer" onclick="Add_Row()"><i class="fa fa-plus-circle"></i>&nbsp;Add Item</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div style="padding:10px 0; text-align:right">
+                        <input id="save" type="button" value="Save Order" class="btn btn-warning" style="padding:10px 20px" />
+                      <input type="hidden" id="hfsysid" />
+                </div>
+}
+                </div>
+            </div>
+        </div>
+    </div>
+
+@section Scripts {
+<script src="~/Pagescripts/dynamictable.js"></script>
+    <script>
+        $("#detailsTable tbody").on('click', '.del', function () {
+            var currentRow = $(this).closest("tr");
+            $(currentRow).find('.del').val("Deleted");
+            $(currentRow).find('.del').attr("style", "display: none;");
+            $(currentRow).find('.lbldel').attr("style", "display: block;");
+        });
+        function Delete(button) {
+
+            var currentRow = $(button).closest("TR");
+            if ($(currentRow).find('.hfdel').val() == "Deleted") {
+                $(currentRow).find('.btndelete').val("Delete");
+            }
+            else {
+                var table = $("#detailsTable")[0];
+
+                //Delete the Table row using it's Index.
+                $(currentRow).find('.btndelete').val("Deleted");
+
+            }
+
+
+        }
+        function cleardata() {
+            $("#detailsTable tbody").find("tr:gt(0)").remove();
+            $("#hfsysid").val("");
+            $("#txtmobile").val("");
+            $("#txtname").val("");
+            $("#txtaddress").val("");
+
+            var row = $("#detailsTable .trbody");
+            $(row).find('.productname').val("");
+            $(row).find('.qty').val("");
+            $(row).find('.rate').val("");
+            $(row).find('.total').val("");
+            $(row).find('.hfdetailsysid').val("");
+
+            //var uri = window.location.toString();
+            //if (uri.indexOf("?") > 0) {
+            //    var clean_uri = uri.substring(0, uri.indexOf("?"));
+            //    window.history.replaceState({}, document.title, clean_uri);
+
+        }
+        $('#save').click(function () {
+         
+            var list = [];
+         
+            $('#detailsTable tbody tr').each(function (index, ele) {
+
+                var orderItem = {
+                    SysId: $('.hfdetailsysid',this).val(),
+                    ProductName: $('.productname', this).val(),
+                    Rate: $('.rate', this).val(),
+                    Qty: $('.qty', this).val(),
+                    Total: $('.total', this).val(),
+                    IsDelete: ($('.del', this).val())
+                }
+                list.push(orderItem);
+
+            })
+
+            var data = {
+                SysId: $("#hfsysid").val(),
+                Name: $('#txtname').val(),
+                Mobile: $('#txtmobile').val(),
+                Address: $('#txtaddress').val(),
+                CustomerOrderDetails: list
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '/Master/save',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                success: function (result) {
+                    if (result.Status == true) {
+                       toastr.success(result.Message);
+                      
+                        cleardata();
+                    }
+                    else {
+                        toastr.error(result.Message);
+
+                    }
+                    $('#save').text('Save');
+                },
+                error: function (error) {
+                    console.log(error);
+                    $('#submit').text('Save');
+                }
+            });
+        });
+        function getbyID(SysId) {
+            var sys_id = SysId;
+         
+            try {
+                $.ajax({
+                    url: '/Master/getSingleOrder',
+                    data: "{ 'orderId': '" + sys_id + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (res) {
+                        var detArr = [];
+                        $("#hfsysid").val(res.result.SysId);
+                        $("#txtmobile").val(res.result.Mobile);
+                        $("#txtname").val(res.result.Name); 
+                        $("#txtaddress").val(res.result.Address);
+                      //  $("#hfsysid").val(res.result.SysId);
+                        $.each(res.result.CustomerOrderDetails, function (i, v) {
+
+
+                            //  detArr.push('<tr><td>' + v.ProductName + '</td><td>' + v.Amount + '</td><td>' + v.Quantity + '</td><td>' + (parseFloat(v.Amount) * parseInt(v.Quantity)) + '</td><td><a data-itemId="' + v.DetailId + '" href="#" class="deleteItem">Delete</a> | <a href="#" data-itemId="' + v.DetailId + '" class="editDetail">Edit</a></td></tr>')
+                            //detArr.push('<tr><td><input type="text" id="currentName" value=' + 1 + ' /><input type="hidden" id="hfdetailsysid" class="hfdetailsysid" value=' + v.OrderDetailsId + '></td><td><input type="text" id="current Name" class="product" value=' + v.ProductID + ' /></td><td><input type="text" id="current Name" class="quantity" value=' + v.Quantity + ' /></td><td><input type="text" id="current Name" class="rate" value=' + v.Rate + ' /></td><td> <button type="button" value="Delete" class="btn btn-icon btn-danger del" tabindex="5"><i class="fa fa-trash-o"></i></button>  </td></tr>')
+                            if (i == 0) {
+                                var row = $("#detailsTable .trbody");
+                                $(row).find('.productname').val(v.ProductName);
+                                $(row).find('.qty').val(v.Qty);
+                                $(row).find('.rate').val(v.Rate);
+                                $(row).find('.total').val(v.Total);
+                                $(row).find('.hfdetailsysid').val(v.SysId);
+                           
+                                $("#detailsTable tbody").append(row);
+                            }
+                         
+                            else
+                            {
+                                var row = $("#detailsTable .trbody").last().clone();
+                              
+                                var sno = parseInt($(row).find('.sno').text()) + 1;
+                                $(row).find('.sno').text(sno);
+                                $(row).find('.hfdetailsysid').val("");
+                                $("td input:text", row).val("");
+                                $('td .lbldel', row).attr("style", "display: none;");
+                                $("td button[type=button]", row).val('Delete');
+                                $("td button[type=button]", row).attr("style", "display: block");
+                                $("td input[type=date]", row).val('');
+                                $("td input[type=time]", row).val('');
+                                //$(row).find('.hfdetailsysid').val(v.OrderDetailsId);
+                                //$(row).find('.Categoryid').val(2);
+                              
+
+                                $(row).find('.productname').val(v.ProductName);
+                                $(row).find('.qty').val(v.Qty);
+                                $(row).find('.rate').val(v.Rate);
+                                $(row).find('.total').val(v.Total);
+                                $(row).find('.hfdetailsysid').val(v.SysId);
+                                $("#detailsTable tbody").append(row);
+
+                            }
+                       
+                        });
+               
+                    },
+                    error: function (response) {
+                        var parsed = JSON.parse(response.responseText);
+                        Error_Msg(parsed.Message);
+                        d.resolve();
+                    },
+                    failure: function (response) {
+                        var parsed = JSON.parse(response.responseText);
+                        Error_Msg(parsed.Message);
+                        d.resolve();
+                    }
+                });
+            } catch (e) {
+
+            }
+
+
+        }
+        $(document).ready(function () {
+            var value = $("#hfsysid").val();
+            if (parseFloat(value)>0)
+            {
+                var orderId = value;
+
+                getbyID(orderId);
+            }
+         
+            
+        });
+  </script>
+    }
+
+
+
+

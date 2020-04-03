@@ -1,0 +1,258 @@
+﻿
+@{
+    ViewBag.Title = "ProductMap";
+}
+
+<div class="row">
+    <div class="col-xl-12 list">
+        <div class="card m-t-30">
+            <div class="card-heading bg-white">
+                <h3 class="card-title ">System List</h3>
+                <div class="fa-pull-right panel-btns">
+
+                    <button type="button" style="margin-top:-30px;" onclick="show()" class="btn btn-secondary waves-effect btn-sm" data-toggle="modal" data-target="#con-close-modal1"><i class="fa fa-plus"></i>&nbsp;AddNew</button>
+
+
+                </div>
+            </div>
+
+            <div class="card-body ">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <select id="searchby" class="form-control">
+                                    <option value="productname">System Name</option>
+                                    <option value="hsn">HSN Code</option>
+                                   
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+
+                            <input type="text" id="searchtext" name="example-input1-group2" class="form-control" placeholder="Search...">
+                            <span class="input-group-prepend">
+                                <button type="button" id="btnSearch" class="btn waves-effect waves-light btn-info"><i class="fas fa-search"></i></button>
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 table-responsive">
+                        <table id="Gvlist" class="table m-0 table-sm table-colored-bordered table-bordered-info" style="border-collapse: collapse; border-spacing: 0; width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>Sno</th>
+                                    <th>System Name</th>
+                                    <th>HSN Code</th>
+                                    <th>Created By</th>
+                                    <th>Created Date</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-12 entry">
+
+
+     
+        <div class="row salesentry">
+
+            <div class="col-md-12">
+
+                <div class="card m-t-30">
+                    <div class="card-heading">
+                        <h3 class="card-title">System Entry</h3>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            @using (Html.BeginForm("Index", null, FormMethod.Post, new { name = "frm", id = "frm" }))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">System Name:</label>
+                                            <input type="text" id="txtproductname" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Hsn Code:</label>
+                                            <input type="text" id="txthsncode" class="form-control" />
+                                        </div>
+                                    </div>
+                                  
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Description:</label>
+                                            <input type="text" id="txtdescription" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12  table-responsive">
+                                        <table id="detailsTable" class="table m-0 table-colored-bordered table-bordered-info" style="border-collapse: collapse; border-spacing: 0; width:100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.no</th>
+                                                    <th>Spare Name</th>
+                                                    <th style="width:100px">HSN Code</th>
+                                                    <th style="width:140px">Tax</th>
+                                                    @*<th style="width:140px">Purchase Price</th>*@
+                                                    <th style="width:140px">Sale Price</th>
+
+                                                    <th style="width:140px">Qty</th>
+                                                    <th style="width:140px">Amount</th>
+                                                    <th>Del</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="trbody">
+                                                    <td class="sno">1</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="hidden" id="hfdetailsysid" class="hfdetailsysid  form-control" />
+                                                            <input type="hidden"  class="hftaxid  form-control" />
+                                                            <select onchange="getsparedetail(this)" class="form-control ddl ddlspare">
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" disabled="disabled" style="background-color:#fff" class="hsncode numeric textrequired form-control" />
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" disabled="disabled" style="background-color:#fff" class="taxname numeric textrequired form-control" />
+                                                        </div>
+                                                    </td>
+                                                    @*<td>
+                                                        <div class="form-group">
+                                                            <input type="text"  disabled="disabled" style="background-color:#fff" class="purchaseprice numeric textrequired form-control" />
+                                                        </div>
+                                                    </td>*@
+
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text"  disabled="disabled" style="background-color:#fff" class="salesprice numeric textrequired form-control" />
+                                                        </div>
+                                                    </td>
+
+
+
+
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" id="qty" onblur="Cal_Amount()" class="qty numeric textrequired form-control" />
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" disabled="disabled" style="background-color:#fff"  class="amount numeric textrequired form-control" />
+                                                        </div>
+                                                    </td>
+
+
+                                                    <td>
+                                                        <button type='button'
+                                                                value='Delete' class="btn btn-icon btn-danger del">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                        <span class='label  lbldel' style='display: none;'>Deleted</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="8">
+                                                        <div class="fa-pull-right">
+                                                            <button type="button" id="InsertRow" class="btn btn-sm btn-success Footer" onclick="Add_Rows()"><i class="fa fa-plus-circle"></i>&nbsp;Add Item</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" id="hfsysid" />
+                                <input type="hidden" id="hfgst5amount" />
+                                <input type="hidden" id="hfgst18amount" />
+                                <input type="hidden" id="hfgst12amount" />
+                                <input type="hidden" id="hfgst28amount" />
+                                @*<div class="row">
+                                    <div class="col-md-9">
+
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="gstdetails">
+
+                                        </div>
+                                    </div>
+                                   
+                                </div>*@
+                                @*<div class="row">
+                                    <div class="col-md-9">
+
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Total</label>
+                                            <input type="text" class="form-control" disabled="disabled" style="background-color:#fff" id="txttotal" />
+ 
+                                        </div>
+                                    </div>
+
+                                </div>*@
+
+
+                                <br />
+                                <div class="text-center">
+                                 
+                                    <button type="button" onclick="saveprocess()" id="btnsave" class="btn btn-success btn-rounded w-md waves-effect waves-light m-b-5"><i class="fa fa-save"></i>&nbsp;Save</button>
+                                    <button type="button" onclick="closedata()" class="btn btn-warning  btn-rounded w-md waves-effect waves-light m-b-5"><i class="fas fa-quidditch"></i>&nbsp;Close</button>
+
+                                </div>
+
+
+
+                            }
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <script src="~/Pagescripts/Master/ProductMap.js"></script>
+}
+
+

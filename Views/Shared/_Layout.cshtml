@@ -1,0 +1,287 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title -Kubera Honda</title>
+    @*@Styles.Render("~/Content/css")
+    *@
+    <link rel="shortcut icon" href="App_Files/Images/Company Images/favicon.ico">
+
+    <link href=@Url.Content("/plugins/sweet-alert2/sweetalert2.css") rel="stylesheet" />
+
+    <!-- Jquery dropify css -->
+    <link rel="stylesheet" type="text/css" href=@Url.Content("/plugins/dropify/css/dropify.css") />
+    <!-- date range picker -->
+    <link href=@Url.Content("/plugins/bootstrap-daterangepicker/daterangepicker.css") rel="stylesheet">
+    <!-- Plugin Css-->
+    <link rel="stylesheet" href=@Url.Content("/plugins/magnific-popup/css/magnific-popup.css") />
+    <!-- App favicon -->
+    <!-- App title -->
+    <title>Zerobugz-Softwares</title>
+
+
+    <!-- App notify -->
+    <link href=@Url.Content("/plugins/toastr/toastr.min.css") rel="stylesheet" type="text/css" />
+    @*<link href=@Url.Content("//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css") rel="stylesheet" type="text/css" />*@
+
+    <!-- Custom box css -->
+    <link href=@Url.Content("/plugins/custombox/css/custombox.min.css") rel="stylesheet">
+
+
+    <!--Morris Chart CSS -->
+    <link rel="stylesheet" href=@Url.Content("/plugins/morris/morris.css")>
+    <!-- DataTables -->
+    <link href=@Url.Content("/plugins/datatables/jquery.dataTables.min.css") rel="stylesheet" type="text/css" />
+    <link href=@Url.Content("/plugins/datatables/responsive.bootstrap4.min.css") rel="stylesheet" type="text/css" />
+
+    <link href=@Url.Content("/plugins/timepicker/bootstrap-timepicker.min.css") rel="stylesheet">
+    <link href=@Url.Content("/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css") rel="stylesheet">
+    <link href=@Url.Content("/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css") rel="stylesheet">
+    <link href=@Url.Content("/plugins/clockpicker/css/bootstrap-clockpicker.min.css") rel="stylesheet">
+    <link href=@Url.Content("/plugins/bootstrap-daterangepicker/daterangepicker.css") rel="stylesheet">
+    <link rel="stylesheet" href=@Url.Content("/plugins/switchery/switchery.min.css")>
+
+    <!-- App css -->
+    <link rel="stylesheet" type="text/css" href=@Url.Content("/assets/css/bootstrap.min.css") />
+    <link rel="stylesheet" type="text/css" href=@Url.Content("/assets/css/icons.css") />
+    <link rel="stylesheet" type="text/css" href=@Url.Content("/assets/css/style.css") />
+
+    @*<link href=@Url.Content("/plugins/bootstrap-sweetalert/sweet-alert.css") rel="stylesheet" type="text/css">*@
+
+
+
+    @Scripts.Render("~/bundles/modernizr")
+    @*<script src= @Url.Content("/assets/js/modernizr.min.js") ></script>*@
+
+</head>
+<body class="widescreen fixed-left">
+    <!-- Begin page -->
+    <div id="wrapper">
+        <!-- Top Bar Start -->
+        <div class="topbar">
+            <!-- LOGO -->
+            <div class="topbar-left">
+                @*<a href="index.html" class="logo"><span>Zir<span>cos</span></span><i class="mdi mdi-layers"></i></a>*@
+                <!-- Image logo -->
+                <a href="#" class="logo">
+                    <span>
+                        <img src="~/App_Files/Images/Company Images/nexelogosm.jpeg" alt="" height="28" /> <label class="label-default">Nexepure</label>
+                        @*<img src="~/App_Files/Images/Company Images/nexelogo.jpeg" alt="" height="50" />*@
+
+                    </span>
+                    <i>
+                        <img src="~/App_Files/Images/Company Images/nexelogosm.jpeg" alt="" height="28" />
+
+                    </i>
+                </a>
+            </div>
+            <!-- Button mobile view to collapse sidebar menu -->
+            <div class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <div class="clearfix">
+                        <!-- Navbar-left -->
+                        <ul class="nav navbar-left">
+                            <li>
+                                <button class="button-menu-mobile open-left waves-effect">
+                                    <i class="mdi mdi-menu"></i>
+                                </button>
+                            </li>
+                            
+
+                        </ul>
+
+                        <!-- Right(Notification) -->
+                        <ul class="nav navbar-right">
+
+
+                            <li class="dropdown user-box">
+                                <a href="#" class="dropdown-toggle waves-effect user-link" data-toggle="dropdown" aria-expanded="true">
+                                    <img src=@Url.Content("/assets/images/users/avatar-1.jpg") alt="user-img" class="rounded-circle user-img">
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right user-list notify-list">
+                                    <li>
+                                        <h5>Hi, Admin</h5>
+                                    </li>
+                                   
+                                    <li><a href='@Url.Action("Index","Login")' class="dropdown-item"><i class="ti-power-off m-r-5"></i> Logout</a></li>
+                                </ul>
+                            </li>
+
+                        </ul> <!-- end navbar-right -->
+                    </div>
+                </div><!-- end container -->
+            </div><!-- end navbar -->
+        </div>
+        <!-- Top Bar End -->
+        <!-- ========== Left Sidebar Start ========== -->
+        <div class="left side-menu">
+            <div class="sidebar-inner slimscrollleft">
+                <!--- Sidemenu -->
+                @{ Html.RenderAction("SideMenu", "Login");}
+                <!-- Sidebar -->
+                <div class="clearfix"></div>
+
+            </div>
+            <!-- Sidebar -left -->
+        </div>
+        <!-- Left Sidebar End -->
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="content-page">
+            <!-- Start content -->
+            <div class="content">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div> <!-- container-fluid -->
+            </div> <!-- content -->
+            <footer class="footer">
+                @DateTime.Now.Year © Apllication <span class="d-none d-sm-inline-block">Developed by Program Pullingo.</span>
+            </footer>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- End Right content here -->
+        <!-- ============================================================== -->
+
+    </div>
+    <!-- END wrapper -->
+
+
+
+
+
+
+
+
+    <script>
+        var resizefunc = [];
+    </script>
+    <!-- jQuery  -->
+    <script src=@Url.Content("/assets/js/jquery.min.js")></script>
+    <script src=@Url.Content("/assets/js/bootstrap.bundle.min.js")></script>
+    <script src=@Url.Content("/assets/js/detect.js")></script>
+    <script src=@Url.Content("/assets/js/fastclick.js")></script>
+    <script src=@Url.Content("/assets/js/jquery.blockUI.js")></script>
+    <script src=@Url.Content("/assets/js/waves.js")></script>
+    <script src=@Url.Content("/assets/js/jquery.slimscroll.js")></script>
+    <script src=@Url.Content("/assets/js/jquery.scrollTo.min.js")></script>
+    <script src=@Url.Content("/plugins/switchery/switchery.min.js")></script>
+    <script src=@Url.Content("/Scripts/jquery.validate.min.js")></script>
+    <script src=@Url.Content("/Scripts/jquery.validate.unobtrusive.js")></script>
+
+    <script src=@Url.Content("/plugins/parsleyjs/parsley.min.js")></script>
+    <!-- Sweet-Alert  -->
+    <script src=@Url.Content("/plugins/sweet-alert2/sweetalert2.min.js")></script>
+    <script src=@Url.Content("/assets/pages/jquery.sweet-alert.init.js")></script>
+
+
+    <!-- Counter js  -->
+    <script src=@Url.Content("/plugins/waypoints/jquery.waypoints.min.js")></script>
+    <script src=@Url.Content("/plugins/counterup/jquery.counterup.min.js")></script>
+    <!-- Date Picker -->
+
+
+    <script src=@Url.Content("/plugins/moment/moment.js")></script>
+    <script src=@Url.Content("/plugins/timepicker/bootstrap-timepicker.js")></script>
+    <script src=@Url.Content("/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js")></script>
+    <script src=@Url.Content("/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js")></script>
+    <script src=@Url.Content("/plugins/clockpicker/js/bootstrap-clockpicker.min.js")></script>
+    <script src=@Url.Content("/plugins/bootstrap-daterangepicker/daterangepicker.js")></script>
+
+    <!-- Init js -->
+    <script src=@Url.Content("/assets/pages/jquery.form-pickers.init.js")></script>
+
+    <!-- Jquery dropify js -->
+    <script src=@Url.Content("/plugins/dropify/js/dropify.min.js")></script>
+
+    <!-- page specific js -->
+    <script src=@Url.Content("/assets/pages/jquery.dropify.init.js")></script>
+
+    <!--datatable-->
+    <script src=@Url.Content("/plugins/datatables/jquery.dataTables.min.js")></script>
+    <script src=@Url.Content("/plugins/datatables/dataTables.bootstrap4.min.js")></script>
+    <script src=@Url.Content("/plugins/datatables/dataTables.responsive.min.js")></script>
+
+
+    <script src=@Url.Content("/assets/pages/jquery.datatables.editable.init.js")></script>
+
+    <!-- Modal-Effect -->
+    <script src=@Url.Content("/plugins/custombox/js/custombox.min.js")></script>
+    <script src=@Url.Content("/plugins/custombox/js/legacy.min.js")></script>
+
+
+    <!-- init -->
+    <script src=@Url.Content("/assets/pages/jquery.datatables.init.js")></script>
+
+
+    <!-- Toastr js -->
+    <script src=@Url.Content("/plugins/toastr/toastr.min.js")></script>
+
+
+    <!-- Toastr init js (Demo)-->
+    <script src=@Url.Content("/assets/pages/jquery.toastr.js")></script>
+
+    <!-- Sweet-Alert  -->
+    <script src=@Url.Content("/plugins/sweet-alert2/sweetalert2.min.js")></script>
+    <script src=@Url.Content("/assets/pages/jquery.sweet-alert.init.js")></script>
+
+
+    <!-- Counter js  -->
+    <script src=@Url.Content("/plugins/waypoints/jquery.waypoints.min.js")></script>
+    <script src=@Url.Content("/plugins/counterup/jquery.counterup.min.js")></script>
+
+    <script type="text/javascript" src=@Url.Content("/plugins/parsleyjs/parsley.min.js")></script>
+    <!-- Dashboard init -->
+
+
+    <script src=@Url.Content("/Pagescripts/keyrestrict.js")></script>
+
+
+    <script src=@Url.Content("/Pagescripts/dynamictable.js")></script>
+    <script src=@Url.Content("/Pagescripts/Master.js")></script>
+
+    <!-- App js -->
+    <script src=@Url.Content("/assets/js/jquery.core.js")></script>
+    <script src=@Url.Content("/assets/js/jquery.app.js")></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#datatable').dataTable();
+            $('#datatable-keytable').DataTable({ keys: true });
+            $('#datatable-responsive').DataTable();
+            $('#datatable-colvid').DataTable({
+            "dom": 'C<"clear">lfrtip',
+                "colVis": {
+                "buttonText": "Change columns"
+                }
+        });
+            $('#datatable-scroller').DataTable({
+        ajax: "../plugins/datatables/json/scroller-demo.json",
+                deferRender: true,
+                scrollY: 380,
+                scrollCollapse: true,
+                scroller: true
+            });
+        var table = $('#datatable-fixed-header').DataTable({ fixedHeader: true });
+        var table = $('#datatable-fixed-col').DataTable({
+        scrollY: "300px",
+                scrollX: true,
+                scrollCollapse: true,
+                paging: false,
+                fixedColumns: {
+            leftColumns: 1,
+                    rightColumns: 1
+                }
+        });
+    });
+    TableManageButtons.init();
+
+    </script>
+    @*@Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")*@
+    @RenderSection("scripts", required: false)
+</body>
+</html>

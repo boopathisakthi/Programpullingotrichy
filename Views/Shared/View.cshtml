@@ -1,0 +1,89 @@
+﻿@model WebApp.Models.MenuModels
+
+<div id="sidebar-menu">
+    <ul>
+       
+
+        <li class="has_sub">
+            <a href='@Url.Action("Dashboard", "Login")' class="waves-effect"><i class="mdi mdi-view-dashboard"></i> <span> Dashboard </span> </a>
+        </li>
+        @if (Model.Logintype == "Stock")
+        {
+          
+            <li class="has_sub">
+
+                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-chart-arc"></i><span> Create </span> <span class="menu-arrow"></span></a>
+                <ul class="list-unstyled">
+                    <li><a href='@Url.Action("Sparepart", "Sparepart")'> Spares</a></li>
+                    <li><a href='@Url.Action("Index", "Customer")'> Dealer</a></li>
+                    <li><a href='@Url.Action("Index", "Expensemasster")'>  Expense</a></li>
+                </ul>
+
+            </li>
+            <li class="has_sub">
+                <a href='@Url.Action("Expanse", "Expense")' class="waves-effect"><i class=" fas fa-money-bill-alt"></i><span> Expense </span> <span class="menu-arrow"></span></a>
+            </li>
+            <li class="has_sub">
+                <a href='@Url.Action("StockList", "Stock")'><i class="fas fa-luggage-cart"></i> <span> Stock Entry </span> </a>
+            </li>
+            <li class="has_sub">
+                <a href='@Url.Action("Entry", "ProductMap")'><i class="fas fa-network-wired"></i> <span> System Map</span> </a>
+            </li>
+
+
+
+            <li class="has_sub">
+                <a href='@Url.Action("Index", "Bill")'><i class="fas fa-donate"></i> <span> Bill Entry </span> </a>
+            </li>
+               
+            <li class="has_sub">
+
+                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-settings"></i><span> Settings </span> <span class="menu-arrow"></span></a>
+                <ul class="list-unstyled">
+                    <li><a href='@Url.Action("Index", "User")'>User Creation</a></li>
+                    <li><a href='@Url.Action("Index", "Company")'>Company Details</a></li>
+                </ul>  
+
+            </li>
+
+
+
+        }
+        else
+        {
+            <li class="has_sub">
+                <a href='@Url.Action("SalesList", "SalesEntry")'><i class="fas fa-donate"></i> <span> Sales Entry </span> </a>
+            </li>
+                <li class="has_sub">
+                    <a href='@Url.Action("PaymentIndex", "Payment")' class="waves-effect"><i class=" fas fa-money-bill-alt"></i><span> Payment </span> </a>
+
+                </li>
+
+                <li class="has_sub">
+
+                    <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-file-document"></i><span> Report </span> <span class="menu-arrow"></span></a>
+                    <ul class="list-unstyled">
+                        <li><a href='@Url.Action("StockReport", "StockReport")'>Stock </a></li>
+                        <li><a href='@Url.Action("index", "SalesReport")'>Sales </a></li>
+                        <li><a href='@Url.Action("index", "PurchaseReport")'>Purchase </a></li>
+                        <li><a href='@Url.Action("index", "CustomerBalance")'>DealerBalance</a></li>
+                        <li><a href='@Url.Action("index", "SupplierBalance")'>SupplierBalance</a></li>
+                    </ul>
+
+                </li>
+                <li class="has_sub">
+
+                    <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-settings"></i><span> Settings </span> <span class="menu-arrow"></span></a>
+                    <ul class="list-unstyled">
+                        <li><a href='@Url.Action("Index", "User")'>User Creation</a></li>
+                        <li><a href='@Url.Action("Index", "Company")'>Company Details</a></li>
+                    </ul>
+
+                </li>
+
+        }
+
+
+    </ul>
+</div>
+

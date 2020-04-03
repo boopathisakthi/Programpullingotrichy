@@ -1,0 +1,169 @@
+﻿@model WebApp.Models.Master.SparepartModels
+@{
+    ViewBag.Title = "SparepartEntry";
+}
+
+<h2></h2>
+<form id="frm">
+    <div id="con-close-modal1" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title mt-0">Single Stock Entry</h4>
+                   
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="label-control">Spare Name:</label>
+                                                @Html.TextBoxFor(model => model.sparename, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.sparename, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="label-control">Purchase Price:</label>
+                                                @Html.TextBoxFor(model => model.purchaseprice, new { @class = "form-control decimal" })
+                                                @Html.ValidationMessageFor(model => model.purchaseprice, "", new {  @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="label-control">Sales Price:</label>
+                                                @Html.TextBoxFor(model => model.salesprice, new { @class = "form-control decimal" })
+                                                @Html.ValidationMessageFor(model => model.salesprice, "",  new {  @class = "text-danger" })
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="label-control">HSN Code:</label>
+                                                @Html.TextBoxFor(model => model.hsncode, new { @class = "form-control decimal" })
+                                                @Html.ValidationMessageFor(model => model.hsncode, "", new { @class = "text-danger" })
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Tax </label>
+                                                <select id="ddltax" class="form-control">
+                                                    <option value="">Select Tax</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Opening Stock </label>
+                                                <input type="hidden" id="hfqty" />
+                                                <input type="tel" class="form-control" value="0" id="txtopeningstock" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Description </label>
+                                                <input type="hidden" id="hfqty" />
+                                                <input type="tel" class="form-control" value="0" id="txtdescription" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer ">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="text-center">
+                                <input type="hidden" id="hfsysid" />
+                                @*<button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>*@
+
+                                <button type="submit" onclick="return Add()" class="btn btn-success   w-md waves-effect waves-light m-b-5"><i class="fa fa-save"></i>&nbsp;Save</button>
+                                <button type="button" onclick="closedata()" class="btn btn-warning   waves-effect waves-light m-b-5"><i class="fas fa-quidditch"></i>&nbsp;Close</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card m-t-30">
+            <div class="card-heading bg-white">
+                <h3 class="card-title ">Single Stock List</h3>
+                <div class="fa-pull-right panel-btns">
+                    
+                    <button type="button" style="margin-top:-30px;" onclick="show()" class="btn btn-secondary waves-effect btn-sm" data-toggle="modal" data-target="#con-close-modal1"><i class="fa fa-plus"></i>&nbsp;AddNew</button>
+
+                  
+                </div>
+            </div>
+         
+            <div class="card-body ">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <select id="searchby" class="form-control">
+                                    <option value="sparename">Sparename</option>
+                                    <option value="purchaseprice">Purchase Price</option>
+                                    <option value="salesprice">Sales Price</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+
+                            <input type="text" id="searchtext" name="example-input1-group2" class="form-control" placeholder="Search...">
+                            <span class="input-group-prepend">
+                                <button type="button" id="btnSearch" class="btn waves-effect waves-light btn-info"><i class="fas fa-search"></i></button>
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 table-responsive">
+                        <table id="Gvlist" class="table m-0 table-sm table-colored-bordered table-bordered-info" style="border-collapse: collapse; border-spacing: 0; width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>Sno</th>
+                                    <th>Sparename</th>
+                                    <th>Purchase Price</th>
+                                    <th>Sales Price</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Pagescripts/Master/SpareParts.js"></script>
+<script src="~/Pagescripts/keyrestrict.js"></script>
+}

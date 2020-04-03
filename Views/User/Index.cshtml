@@ -1,0 +1,164 @@
+﻿@model WebApp.Models.UserModels
+
+@{
+
+}
+
+
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="row userlist">
+            <div class="col-md-12">
+                <div class="card m-t-30">
+                    <div class="card-heading">
+                        <h3 class="card-title">User List</h3>
+                        <div class="fa-pull-right panel-btns">
+                            <button type="button" style="margin-top:-42px;" class="btn btn-secondary waves-effect btn-sm " onclick="Show()"><i class="fa fa-plus"></i>&nbsp;Add</button>
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        @*(Html.BeginForm("AddOrEdit", "Employee", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "Employee", new { id = 0 }) })) //data-reseturl*@
+
+                        <div class="row">
+                            <div class="col-sm-12 table-responsive">
+                                <table id="gvproductlist" class="table m-0 table-colored-bordered table-bordered-info table-sm" style="border-collapse: collapse; border-spacing: 0; width:100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Sno</th>
+                                            <th>Name</th>
+                                            <th>Usertype</th>
+                                            <th>Mobile</th>
+                                            <th>Email</th>
+
+
+
+                                            <th>Edit</th>
+                                            <th>Del</th>
+
+
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" id="hfimg" />
+        <div class="row userentry">
+            <div class="center-page">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="card m-t-30">
+                            <div class="card-heading">
+                                <h3 class="card-title">User Entry</h3>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="card-body">
+                                    @using (Html.BeginForm("Index", null, FormMethod.Post, new { name = "frm", id = "frm" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Name</label>
+                                                    @Html.TextBoxFor(model => model.name, new { @class = "form-control clear alphaspacekey" })
+                                                    @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Mobile</label>
+                                                    @Html.TextBoxFor(model => model.mobile, new { @class = "form-control clear numerickey", @maxlength = "10" })
+                                                    @Html.ValidationMessageFor(model => model.mobile, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Email</label>
+                                                    @Html.TextBoxFor(model => model.email, new { @class = "form-control clear" })
+                                                  @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Usertype</label>
+                                                    <select id="ddlUsertype" class="product form-control">
+                                                        <option>Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">CompanyName</label>
+                                                    <select id="ddlcompany" class="product form-control">
+                                                        <option>Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="field-6" class="control-label">logname</label>
+                                                    @Html.TextBoxFor(model => model.logname, new { @class = "form-control clear" })
+                                                    @Html.ValidationMessageFor(model => model.logname, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Password</label>
+                                                    @Html.TextBoxFor(model => model.pwd, new { @class = "form-control clear" })
+                                                    @Html.ValidationMessageFor(model => model.pwd, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">User Img</label><br />
+                                                        <img src="@Url.Content(Model.img)" style="margin:10px;" height="150" width="150" id="imagePreview" />
+                                                        <input type="file" id="imguploader" name="ImageUpload" accept="image/jpeg, image/png" onchange="ShowImagePreview(this, document.getElementById('imagePreview'))" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="hidden" id="hfsysid" />
+                                            <button type="button" onclick="closedata()" class="btn btn-secondary">Close</button>
+                                            <button type="button" onclick="return Add()" class="btn btn-info waves-effect waves-light">Save</button>
+                                        </div>
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+<script src="~/Pagescripts/keyrestrict.js"></script>
+   
+<script src="~/Pagescripts/user.js"></script>
+}

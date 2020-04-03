@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewBag.Title = "GenarateBarcode";
+}
+
+<form id="frm">
+
+
+    <div class="row">
+        <div class="col-xl-12">
+
+            <div class="card m-t-30">
+                <div class="card-heading ">
+                    <h2 class="card-title ">Barcode Table</h2>
+                    <div class="fa-pull-right panel-btns">
+                        @*<button type="button" style="margin-top:-30px;" class="btn btn-secondary waves-effect btn-sm" data-toggle="modal" data-target="#con-close-modal"><i class="fa fa-plus"></i>&nbsp;Bulk Upload</button>*@
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <select id="ddlbarcode" onchange="hidetable()" class="form-control">
+                                    <option value="Specific">Specific</option>
+                                    <option value="All">All</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" onclick="return Genarate()" class="btn btn-info waves-effect waves-light">Genarate Barcode</button>
+                        </div>
+                    </div>
+                    <div class="row barcodediv">
+                        <div class="col-md-12 table-responsive">
+
+                            <table id="tblbarcode" class="" style="border-collapse: collapse; border-spacing: 0; width:100%;">
+                                <tbody class="">
+                                    <tr class="trbody">
+                                        <td class="col-md-12 ">
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <input type="hidden" id="hfdetailsysid" class="hfdetailsysid  form-control clear1" />
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label class="control-label">PartNumber</label>
+                                                            <input type="tel" class="form-control  txtpartnumber" onblur="Getdetails(this)" id="txtpartnumber" />
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="control-label">CategoryName</label>
+                                                            <input type="tel" class="form-control dis  txtcategory" id="txtcategory" />
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Binlocation</label>
+                                                            <input type="tel" class="form-control dis  txtbinlocation" id="txtbinlocation" />
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Qty</label>
+                                                            <input type="tel" class="form-control  txtstock" id="txtstock" />
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1">
+
+                                                        <button type='button'
+                                                                value='Delete' class="btn m-t-20 fa-pull-right  btn-icon btn-danger del">
+                                                            X
+                                                        </button>
+                                                        <span class='btn m-t-20 fa-pull-right  btn-icon btn-warning lbldel' style='display: none; '><i class="fas fa-trash-alt"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td>
+                                            <div class="fa-pull-right">
+                                                <button type="button" id="InsertRow" class="btn btn-sm btn-success Footer" onclick="Add_Row()"><i class="fa fa-plus-circle"></i>&nbsp;Add More</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@section scripts{
+    
+<script src="~/Pagescripts/Barcode/Genaratebarcode.js"></script>
+}
+

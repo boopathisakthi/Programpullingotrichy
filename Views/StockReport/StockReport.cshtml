@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "StockReport";
+}
+<div class="row">
+    <div class="col-xl-12">
+
+        <div class="card m-t-30">
+            <div class="card-heading ">
+                <h3 class="card-title ">Stock Report</h3>
+                <div class="fa-pull-right panel-btns">
+                    <button type="button" style="margin-top:-30px;" onclick="DownloadData()" class="btn btn-sm btn-secondary dwbtn"><i class="fa fa-download"></i> </button>
+                  
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <select id="searchby" class="form-control">
+                                    <option value="sparename">Spare Name</option>
+                                    <option value="hsncode">HSN Code</option>
+                                    
+                                   
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+
+                            <input type="text" id="searchtext" name="example-input1-group2" class="form-control" placeholder="Search...">
+                            <span class="input-group-prepend">
+                                <button type="button" id="btnSearch" class="btn waves-effect waves-light btn-info"><i class="fas fa-search"></i></button>
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 table-responsive">
+                        <table id="Gvlist" class="table m-0 text-center table-colored-bordered table-bordered-info table-sm" style="border-collapse: collapse; border-spacing: 0; width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>Sno</th>
+                                    <th>Spare Name</th>
+                                    <th>Hsn Code</th>
+                                    <th>Tax Name</th>
+                                    <th>Opening Stock</th>
+                                    <th>Available qty</th>                                                                       
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+<script src="~/Pagescripts/Report/StockReport.js"></script>
+   }

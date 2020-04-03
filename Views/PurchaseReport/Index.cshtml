@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+
+        <div class="card m-t-30">
+            <div class="card-heading ">
+                <h3 class="card-title ">Purchase Report</h3>
+
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+
+                            <label class="control-label">From Date:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control  datepicker-autoclose clear" placeholder="mm/dd/yyyy" id="txtfromdate">
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-custom text-white b-0"><i class="mdi mdi-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">To Date:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control  datepicker-autoclose clear" placeholder="mm/dd/yyyy" id="txttodate">
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-custom text-white b-0"><i class="mdi mdi-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">Supplier Name:</label>
+                            <select class="form-control" id="ddlsupplier"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+
+
+                        <button type="button" onclick="LoadData()" style="margin-top: 25px;"
+                                id="btnSearch" class="btn waves-effect waves-light btn-info">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button type="button" onclick="DownloadData()" id="btnSearch" style="margin-top: 25px;" class="btn btn-sm btn-secondary dwbtn"><i class="fas fa-download"></i></button>
+
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 table-responsive">
+                        <table id="Gvlist" class="table m-0 text-center table-colored-bordered table-bordered-info table-sm" style="border-collapse: collapse; border-spacing: 0; width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>Sno</th>
+                                    <th>Purchase No</th>
+                                    <th>Entry Date</th>
+                                    <th>Name</th>
+                                    <th>Total</th>
+
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Pagescripts/Report/PurchaseReport.js"></script>
+}
+
+
+
+

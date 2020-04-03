@@ -1,0 +1,207 @@
+﻿@model WebApp.Models.CustomerModels
+
+
+@{
+    ViewBag.Title = "CompanyDetails";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+
+        <div class="row companylist">
+            <div class="col-md-12">
+                <div class="card m-t-30">
+                    <div class="card-heading">
+                        <h3 class="card-title">Company List</h3>
+                        <div class="fa-pull-right panel-btns">
+                            @*<button type="button" style="margin-top:-42px;" class="btn btn-secondary waves-effect btn-sm " onclick="Show()"><i class="fa fa-plus"></i>&nbsp;Add</button>*@
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        @*(Html.BeginForm("AddOrEdit", "Employee", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "Employee", new { id = 0 }) })) //data-reseturl*@
+
+                        <div class="row">
+                            <div class="col-sm-12 table-responsive">
+                                <table id="gvcompanylist" class="table m-0 table-colored-bordered table-bordered-info table-sm" style="border-collapse: collapse; border-spacing: 0; width:100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Sno</th>
+                                            <th>companyName</th>
+                                            <th>Email</th>
+                                            <th>mobileNo</th>
+                                            <th>StateName</th>
+                                            <th>CityName</th>
+                                            <th>Edit</th>
+                                          
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row companyEntry">
+            <div class="col-md-12">
+                <div class="card m-t-30">
+                    <div class="card-heading bg-info">
+
+                        <h3 class="card-title text-white">Company Details</h3>
+                        @Html.HiddenFor(m => m.SysId, new { @id = "hfsysid" })
+                    </div>
+                    <div class="card-body">
+  
+                                @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "frm", id = "frm" }))
+                                {
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+
+                                                <label class="control-label">CompanyName:</label>
+                                                <input type="text" id="txtcompanyname" class="form-control" />
+                                              
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Gst No:</label>
+                                                <input type="text" id="txtgstno" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Pan No:</label>
+                                                <input type="text" id="txtpanno" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+
+                                                <label class="control-label">Address1:</label>
+                                                <input type="text" id="txtaddress1" class="form-control" />
+                                              
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Address2:</label>
+                                                <input type="text" id="txtaddress2" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Pincode:</label>
+                                                <input type="text" id="txtpincode" class="form-control" />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">City:</label>
+                                                <select id="ddlcity" class="product form-control">
+                                                    <option>Select</option>
+                                                </select>
+                                             
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">State:</label>
+                                                <select id="ddlstate" class="form-control state">
+                                                    <option>Select</option>
+                                                </select>
+                                               
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">TelePhoneNo:</label>
+                                                <input type="text" id="txttelephoneno" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Mobileno:</label>
+                                                <input type="text" id="txtmobileno" class="form-control" />
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Email:</label>
+                                                <input type="text" id="txtemail" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Bank Name:</label>
+                                                <input type="text" id="txtbankname" class="form-control" />
+                                           
+                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+
+                                                <label class="control-label">Branch Name:</label>
+                                                <input type="text" id="txtbranchname" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Account holder Name:</label>
+                                                <input type="text" id="txtaccountname" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Account Number:</label>
+                                                <input type="text" id="txtaccountnumber" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+
+                                                <label class="control-label">Ifsc code:</label>
+                                                <input type="text" id="txtifscno" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="button" onclick="return Add()" id="btnsave" class="btn btn-success btn-rounded w-md waves-effect waves-light m-b-5"><i class="fa fa-save"></i>&nbsp;Save</button>
+                                        <button type="button" onclick="closedata()" class="btn btn-warning  btn-rounded w-md waves-effect waves-light m-b-5"><i class="fas fa-quidditch"></i>&nbsp;Close</button>
+
+                                    </div>
+
+                                }
+                          
+                    </div>
+                </div>
+
+            </div>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/Pagescripts/setting/Company.js"></script>
+   }

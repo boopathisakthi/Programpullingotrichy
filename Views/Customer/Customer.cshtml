@@ -1,0 +1,241 @@
+﻿
+@{
+    ViewBag.Title = "Customer";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+
+        <div class="card m-t-30">
+            <div class="card-heading ">
+                <h3 class="card-title ">Dealer & supplier Details</h3>
+                
+                      
+                   
+               
+                <div class="fa-pull-right panel-btns">    
+                        @*<button type="button" style="margin-top:-30px;" onclick="DownloadData()" class="btn btn-sm btn-secondary dwbtn"><i class="fa fa-download"></i> </button>*@
+                        <button type="button" style="margin-top:-30px;" onclick="cleardata()" class="btn btn-secondary waves-effect btn-sm" data-toggle="modal" data-target="#con-close-modal1"><i class="fa fa-plus"></i>&nbsp;AddNew</button>
+                  
+                        @*<button type="button" style="margin-top:-30px;" class="btn btn-secondary waves-effect btn-sm" data-toggle="modal" data-target="#con-close-modal"><i class="fa fa-plus"></i>&nbsp;Bulk Upload</button>*@
+                   
+                    </div>
+                <div class="fa-pull-right panel-btns">
+                    <select id="ddltype" style="margin-top:-20px !important; margin-right:100px;padding-right:10px !important" onchange="LoadData()" class="form-control">
+                        <option value="Customer">Dealer</option>
+                        <option value="Supplier">Supplier</option>
+                        <option value="Dealer">Dealer</option>
+                    </select>                  
+
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    
+                    <div class="col-md-4">
+                        <select id="searchby" class="form-control">
+                            <option value="name">Name</option>
+                            <option value="mobile">Mobile</option>
+                            <option value="companyname">Companyname</option>
+                            <option value="type">Type</option>
+
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+
+                            <input type="text" id="searchtext" name="example-input1-group2" class="form-control" placeholder="Search...">
+                            <span class="input-group-prepend">
+                                <button type="button" id="btnSearch" class="btn waves-effect waves-light btn-info"><i class="fas fa-search"></i></button>
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 table-responsive">
+                        <table id="Gvlist" class="table m-0 table-colored-bordered table-bordered-info table-sm" style="border-collapse: collapse; border-spacing: 0; width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>Sno</th>
+                                    <th>Name</th>
+                                    <th>Mobile</th>                                    
+                                    <th>Companyname</th>
+                                    <th>GSTNO</th>
+                                    <th>Address</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form id="frm">
+    <div id="con-close-modal1" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title mt-0">Dealer & supplier Entry</h4>
+                    <button type="button" onclick="cleardata()" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Name </label>
+                                                <input type="text" class="form-control" id="txtname" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Mobile </label>
+                                                <input type="text" class="form-control numerickey " id="txtmobile" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Email </label>
+                                                <input type="text" class="form-control " id="txtemail" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Address </label>
+                                                <textarea id="txtaddress" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">                           
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Company Name</label>
+                                                <input type="tel" class="form-control " id="txtcompanyname" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Gstno</label>
+                                                <input type="tel" class="form-control " id="txtgstno" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Panno</label>
+                                                <input type="tel" class="form-control " id="txtpano" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">State:</label>
+                                                <select id="ddlstate" class="form-control state">
+                                                    <option>Select</option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Description</label>
+                                                <input type="tel" class="form-control " id="txtdesc" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                            
+                        </div>                       
+                    </div>
+                </div>
+                <div class="modal-footer ">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="text-center">
+                                <input type="hidden" id="hfsysid" />
+                                <button type="button" onclick="cleardata()" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+                                <button type="button" onclick="cleardata()" class="btn btn-secondary waves-effect">Clear</button>
+
+                                <button type="button" onclick="return Add()" class="btn btn-info waves-effect waves-light">Save</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div id="con-close-modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title mt-0">Bulk Upload</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                    <h3><label id="wait" class="text-danger text-center">Please Wait ....</label></h3>
+                </div>
+                <div id="FileBrowse">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mt-4">
+                                <h4 class="header-title m-t-0 m-b-20">Pick Your File</h4>
+                                <input type="file" id="Fileupload" class="dropify" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+
+                        <div id="progressbar-5">
+                            <div class="progress-label">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer ">
+
+
+                <a href="~/App_Files/Samble Excels/Product Upload.xlsx" data-tagle="Samble Download" class="btn btn-icon waves-effect btn-secondary "><i class="ion ion-md-arrow-round-down"></i></a>
+                <button type="submit" onclick="return Uploadbulkexcel()" class="btn btn-info waves-effect waves-light">Upload</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Pagescripts/master/customer.js"></script>
+}
+
