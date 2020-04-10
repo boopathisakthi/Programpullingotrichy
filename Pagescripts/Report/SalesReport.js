@@ -7,6 +7,7 @@
 
     $("#txtfromdate").datepicker().datepicker("setDate", startDateFrom);
     $("#txttodate").datepicker().datepicker("setDate", currentTime);
+    LoadData()
 })
 
 function LoadData() {
@@ -16,13 +17,15 @@ function LoadData() {
     data[2] = "entrydate";
     data[3] = "customersysid";
     data[4] = "total";
+    
+  
     var FilterParameter = {
         FROM_DATE: $('#txtfromdate').val(),
         TO_DATE:$('#txttodate').val(),
         customersysid:$('#ddlcustomer').val()
     }
 
-    Parameterbinddata("#Gvlist", "/SalesReport/Getlist", data,FilterParameter);
+    Parameterbindwithviewdata("#Gvlist", "/SalesReport/Getlist", data, FilterParameter);
 }
 function DownloadData() {
 
@@ -68,4 +71,37 @@ function DownloadData() {
     });
     return false;
 
+}
+
+function getdetails(sysid)
+{
+        $.ajax({
+            url: '/SalesEntry/Get_Edit',
+            data: "{ 'sysid': '" + sysid + "'}",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (res) {
+                $("#detailsTable tbody").empty();
+                $.each(res.result.SalesDeatils, function (i, v) {
+                    let sno=i+1;
+                    let row = `<tr><td>` + sno + `</td> <td>` + v.type + `</td><td>` + v.sparename + `</td><td>` + v.hsncode + `</td><td>` + v.salesprice + `</td><td>` + v.qty + `</td><td>` + v.amount + `</td></tr>`;
+                    $("#detailsTable tbody").append(row);
+                })
+                $('#con-close-modal1').modal('show')
+
+            },
+            error: function (response) {
+                var parsed = JSON.parse(response.responseText);
+                Error_Msg(parsed.Message);
+                d.resolve();
+            },
+            failure: function (response) {
+                var parsed = JSON.parse(response.responseText);
+                Error_Msg(parsed.Message);
+                d.resolve();
+            }
+        });
+    
+   
 }

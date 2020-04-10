@@ -65,7 +65,7 @@
                                     <th>Entry Date</th>
                                     <th>Name</th>
                                     <th>Total</th>
-
+                                    <th>Details</th>
                                 </tr>
                             </thead>
                         </table>
@@ -73,6 +73,54 @@
 
 
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="con-close-modal1" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title mt-0">SpareDetails</h4>
+                <button type="button" onclick="cleardata()" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+               
+                    <div class="row">
+                        <div class="col-md-12  table-responsive">
+                            <table id="detailsTable" class="table m-0 table-colored-bordered table-bordered-info" style="border-collapse: collapse; border-spacing: 0; width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th>S.no</th>
+                                        <th style="width:200px">Name</th>
+                                        <th style="width:140px">HSN Code</th>
+                                        <th style="width:140px">Purchase Price</th>
+                                        <th>Qty</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="trbody"></tbody>
+
+                            </table>
+                        </div>
+                    
+                </div>
+            </div>
+            <div class="modal-footer ">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="text-center">
+
+                            <button type="button" onclick="cleardata()" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

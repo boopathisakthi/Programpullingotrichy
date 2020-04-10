@@ -5,7 +5,7 @@ $(document).ready(function () {
     LoadData();
     $('.list').show('slow');
     $('.salesentry').toggle('slow');
-    Bindddl_Data($('.ddlspare'), '/Sparepart/Getdropdown_Spare');
+    Drobdownbindsearch($('.ddlspare'), '/Sparepart/Getdropdown_Spare');
 })
 
 function saveprocess() {
@@ -14,13 +14,13 @@ function saveprocess() {
         var Deatil = [];
 
         $('#detailsTable tbody tr').each(function (index, ele) {
+           
+            if ($('.ddlspare', this).find('option:selected').val() != '' && $('.ddlspare', this).find('option:selected').val() != undefined) {
 
-            if ($('.ddlspare', this).val() != '' && $('.ddlspare', this).val() != 0) {
-
-
+               
                 let details = {
                     sysid: $('.hfdetailsysid', this).val(),
-                    spare_sysid: $('.ddlspare', this).val(),
+                    spare_sysid: $('.ddlspare', this).find('option:selected').val(),
                     sparename: $('.ddlspare', this).find('option:selected').text(),
                     hsncode: $('.hsncode', this).val(),
                     taxname: $('.taxname', this).val(),
@@ -61,7 +61,7 @@ function saveprocess() {
             SpareDetails: Deatil
         }
 
-        return insertdata("#frm", data, "/ProductMap/save");
+       return insertdata("#frm", data, "/ProductMap/save");
 
 
 
@@ -96,6 +96,7 @@ function closedata() {
     $('.list').toggle('slow');
     $('.salesentry').hide();
     //location.reload();
+    LoadData()
 
 }
 function getbyID(SysId)
@@ -121,14 +122,17 @@ function getbyID(SysId)
 
                     if (i == 0) {
                         var row = $("#detailsTable .trbody");
-                        BindddlDataele($(row).find('.ddl'), '/Sparepart/Getdropdown_Spare', v.spare_sysid);
+                        $(row).find('.selecpick').empty();
+                        $(row).find('.selecpick').append(`<select id="ddlspare" onchange="getsparedetail(this)" required data-live-search="true" class="selectpicker ddlspare" data-style="btn-normal"></select>`);
+                        Drobdownbindsearchwithid($(row).find('.ddlspare'), '/Sparepart/Getdropdown_Spare', v.spare_sysid);
+                      
                         $(row).find('.hfdetailsysid').val(v.sysid);
-                        $(row).find('.hftaxid').val(v.taxid);
-                        $(row).find('.salesprice').val(v.salesprice);
+                       // $(row).find('.hftaxid').val(v.taxid);
+                      //  $(row).find('.salesprice').val(v.salesprice);
                         $(row).find('.hsncode').val(v.hsncode);
-                        $(row).find('.taxname').val(v.taxname);
+                       // $(row).find('.taxname').val(v.taxname);
                         $(row).find('.qty').val(v.qty);
-                        $(row).find('.amount').val(v.amount);
+                        //$(row).find('.amount').val(v.amount);
 
                        
 
@@ -160,14 +164,17 @@ function getbyID(SysId)
                         $("td input[type=time]", row).val('');
 
 
-                        BindddlDataele($(row).find('.ddlspare'), '/Sparepart/Getdropdown_Spare', v.spare_sysid);
+                        $(row).find('.selecpick').empty();
+                        $(row).find('.selecpick').append(`<select id="ddlspare" onchange="getsparedetail(this)" required data-live-search="true" class="selectpicker ddlspare" data-style="btn-normal"></select>`);
+
+                        Drobdownbindsearchwithid($(row).find('.ddlspare'), '/Sparepart/Getdropdown_Spare', v.spare_sysid);
                         $(row).find('.hfdetailsysid').val(v.sysid);
-                        $(row).find('.hftaxid').val(v.taxid);
-                        $(row).find('.salesprice').val(v.salesprice);
+                        //$(row).find('.hftaxid').val(v.taxid);
+                        //$(row).find('.salesprice').val(v.salesprice);
                         $(row).find('.hsncode').val(v.hsncode);
                         $(row).find('.qty').val(v.qty);
-                        $(row).find('.taxname').val(v.taxname);
-                        $(row).find('.amount').val(v.amount);
+                       // $(row).find('.taxname').val(v.taxname);
+                       // $(row).find('.amount').val(v.amount);
                       
                        
                         $("#detailsTable tbody").append(row);
@@ -212,9 +219,7 @@ function cleardata() {
     $("#txtopeningstock").val("");
     $("#txtdescription").val("");
 
-
     var row = $("#detailsTable .trbody");
-
     $(row).find('.hfdetailsysid').val("");
     $(row).find('.hftaxid').val("");
     $(row).find('.purchaseprice').val("");
@@ -223,8 +228,11 @@ function cleardata() {
     $(row).find('.taxname').val("");
     $(row).find('.amount').val("");
     $(row).find('.qty').val("");
+    $(row).find('.selecpick').empty();
+    $(row).find('.selecpick').append(`<select id="ddlspare" onchange="getsparedetail(this)" required data-live-search="true" class="selectpicker ddlspare" data-style="btn-normal"></select>`);
 
-   Bindddl_Data($('.ddlspare'), '/Sparepart/Getdropdown_Spare');
+
+    Drobdownbindsearch($('.ddlspare'), '/Sparepart/Getdropdown_Spare');
 
 }
 
@@ -292,11 +300,14 @@ function clears(row) {
     $(row).find('.purchaseprice').val("");
     $(row).find('.salesprice').val("");
 
+    $(row).find('.selecpick').empty();
+    $(row).find('.selecpick').append(`<select id="ddlspare" onchange="getsparedetail(this)" required data-live-search="true" class="selectpicker ddlspare" data-style="btn-normal"></select>`);
+
 
 
 
     $(row).find('.qty').val("");
-    Bindddl_Data($(row).find('.ddlspare'), '/Sparepart/Getdropdown_Spare');
+    Drobdownbindsearch($(row).find('.ddlspare'), '/Sparepart/Getdropdown_Spare');
     $("td input:text", row).val("");
     $('td .lbldel', row).attr("style", "display: none;");
     $("td button[type=button]", row).val('Delete');
@@ -310,15 +321,10 @@ function clears(row) {
 var Gstdetail = [];
 
 function Cal_Amount() {
- 
-    
+
     var total = 0;
- 
-
     $('#detailsTable tbody tr').each(function (i, ele) {
-
-        if ($('.ddlspare', this).val() != '' && $('.ddlspare', this).val() != 0) {
-
+        if ($('.ddlspare', this).find('option:selected').val() != '' && $('.ddlspare', this).find('option:selected').val() != 0) {
             if ($('.salesprice', this).val() != '' && $('.qty', this).val() != '') {
                 if ($('.del', this).val() == "Deleted")
                 {
@@ -334,13 +340,6 @@ function Cal_Amount() {
             total = parseFloat(total) + parseFloat($('.amount', this).val());
         }
     })
-
- 
-
-
-   
-
-
 }
 
 

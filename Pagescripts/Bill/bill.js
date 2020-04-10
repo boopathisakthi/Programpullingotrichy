@@ -1,29 +1,20 @@
-﻿
-$(document).ready(function () {
+﻿$(document).ready(function () {
     $(".dis").attr("disabled", "disabled");
-
     LoadData();
-
     closedata()
-    Bindddl_Data($('#ddlcustomer'), '/Customer/Getcustomerdropdown');
+    Drobdownbindsearch($('#ddlcustomer'), '/Customer/Getcustomerdropdown');
+    Drobdownbindsearch($('.ddlspare'), '/ProductMap/Getdropdown_System');
 })
-
 function saveprocess() {
     try {
         var Deatil = [];
-        if ($('#txtinvoiceno').val() == '0' || $('#txtinvoiceno').val() == '' )
-        {
-
-            toastr.error('invoice no invalid')
-            return false
-        }
+       
         $('#detailsTable tbody tr').each(function (index, ele) {
-            if ($('.ddlspare', this).val() != '' && $('.ddlspare', this).val() != 0) {
-
+            if ($('.ddlspare', this).find('option:selected').val() != undefined && $('.ddlspare', this).find('option:selected').val() != '') {
                 let details = {
                     sysid: $('.hfdetailsysid', this).val(),
                     type: $('.ddltype', this).find('option:selected').text(),
-                    spare_sysid: $('.ddlspare', this).val(),
+                    spare_sysid: $('.ddlspare', this).find('option:selected').val(),
                     sparename: $('.ddlspare', this).find('option:selected').text(),
                     hsncode: $('.hsncode', this).val(),
                     salesprice: $('.salesprice', this).val(),
@@ -50,7 +41,7 @@ function saveprocess() {
                     billno: 'sales',
                     type: 'customer',
                     typeid: $('#ddlcustomer').val(),
-                    trans_no: $('#txtinvoiceno').val()
+                    trans_no: $('#lblbillno').text()
                 }
                 Payment.push(detail);
                 total = parseFloat(total) + parseFloat($('.payamount', this).val());
@@ -90,7 +81,7 @@ function saveprocess() {
             description: $('#txtdescription').val(),
             customersysid: $('#ddlcustomer').val(),
             total: $('#txttotal').val(),
-            invoiceno: $('#txtinvoiceno').val(),
+            invoiceno: $('#lblbillno').text(),
             taxtype: $('#ddltaxtype').val(),
             roundoff: $("#txtroundoff").val(),
             roundoff_type: $("#ddlroundoff_type").val(),
@@ -132,28 +123,27 @@ function saveprocess() {
         toastr.error(ex);
     }
 }
-
 function getinvoiceno() {
 
     $.ajax({
         url: '/Bill/GetInvoiceNo',
-        data: "{ 'billno':"+ $('#txtinvoiceno').val()+"}",
+       // data: "{ 'billno':"+ $('#txtinvoiceno').val()+"}",
         dataType: "json",
         type: "POST",
         contentType: "application/json; charset=utf-8",
 
         success: function (res) {
-        
-            // $("#lblinvoiceno").text(res.Id)
-            if(res.Id==0)
-            {
-                toastr.success('invoice no valid')
-            }
-            else
-            {
-                toastr.error('invoice no invalid')
-                $('#txtinvoiceno').val('0')
-            }
+            
+             $("#lblbillno").text("BE"+(parseInt(res.Id)+1))
+            //if(res.Id==0)
+            //{
+            //    toastr.success('invoice no valid')
+            //}
+            //else
+            //{
+            //    toastr.error('invoice no invalid')
+            //    $('#txtinvoiceno').val('0')
+            //}
 
 
 
@@ -185,8 +175,6 @@ function LoadData() {
 
     binddata("#Gvlist", "/Bill/GetList", data);
 }
-
-
 function getbyID(SysId) {
     try {
         $.ajax({
@@ -201,14 +189,17 @@ function getbyID(SysId) {
 
                 $("#hfsysid").val(res.result.sysid);
                 $("#txtentrydate").val(res.result.entrydate);
-                $('#txtinvoiceno').val(res.result.invoiceno);
+                $("#lblbillno").text(res.result.invoiceno)
+              
                 $('#ddltaxtype').val(res.result.taxtype);
                 $("#txtdescription").val(res.result.description);
                 $("#txttotal").val(res.result.total);
                 $("#txtroundoff").val(res.result.roundoff);
                 $("#ddlroundoff_type").val(res.result.roundoff_type);
-
-                BindddlDataele($('#ddlcustomer'), '/Customer/Getcustomerdropdown', res.result.customersysid);
+                $('#ddlcustomer').selectpicker('val', res.result.customersysid);
+               // $('#ddlcustomer').val(res.result.customersysid)
+                getcustomerstate()
+                //BindddlDataele($('#ddlcustomer'), '/Customer/Getcustomerdropdown', res.result.customersysid);
                 $.each(res.result.SalesDeatils, function (i, v) {
                     if (i == 0) {
                         var row = $("#detailsTable .trbody");
@@ -221,12 +212,21 @@ function getbyID(SysId) {
                         $(row).find('.amount').val(v.amount);
                         $(row).find('.hftaxname').val(v.taxname);
                         $(row).find('.hfoldqty').val(v.qty);
+
+
+                        $(row).find('.selecpick').empty();
+                        $(row).find('.selecpick').append(`<select id="ddlspare" onchange="getsparedetail(this)" required data-live-search="true" class="selectpicker ddlspare" data-style="btn-normal"></select>`);
+
+                        // Drobdownbindsearch($(row).find('.ddlspare'), '/ProductMap/Getdropdown_System');
+
                         if (v.type == 'System') {
-                            BindddlDataele($(row).find('.ddlspare'), '/ProductMap/Getdropdown_System/', v.spare_sysid);
+
+                            Drobdownbindsearchwithid($(row).find('.ddlspare'), '/ProductMap/Getdropdown_System/', v.spare_sysid);
                         }
                         else {
-                            BindddlDataele($(row).find('.ddlspare'), '/Sparepart/Getdropdown_Spare', v.spare_sysid);
+                            Drobdownbindsearchwithid($(row).find('.ddlspare'), '/Sparepart/Getdropdown_Spare', v.spare_sysid);
                         }
+
 
 
 
@@ -266,12 +266,19 @@ function getbyID(SysId) {
                         $(row).find('.amount').val(v.amount);
                         $(row).find('.hfoldqty').val(v.qty);
 
+                        $(row).find('.selecpick').empty();
+                        $(row).find('.selecpick').append(`<select id="ddlspare" onchange="getsparedetail(this)" required data-live-search="true" class="selectpicker ddlspare" data-style="btn-normal"></select>`);
+
+                        // Drobdownbindsearch($(row).find('.ddlspare'), '/ProductMap/Getdropdown_System');
+
                         if (v.type == 'System') {
-                            BindddlDataele($(row).find('.ddlspare'), '/ProductMap/Getdropdown_System/', v.spare_sysid);
+
+                            Drobdownbindsearchwithid($(row).find('.ddlspare'), '/ProductMap/Getdropdown_System/', v.spare_sysid);
                         }
                         else {
-                            BindddlDataele($(row).find('.ddlspare'), '/Sparepart/Getdropdown_Spare', v.spare_sysid);
+                            Drobdownbindsearchwithid($(row).find('.ddlspare'), '/Sparepart/Getdropdown_Spare', v.spare_sysid);
                         }
+
 
                         $("#detailsTable tbody").append(row);
 
@@ -321,7 +328,7 @@ function getbyID(SysId) {
 
                 })
 
-                Cal_Amount();
+              
                 Cal_Balance();
                 Cal_Roundoff();
             },
@@ -341,15 +348,14 @@ function getbyID(SysId) {
     }
 
 }
-
-
 function show() {
     cleardata();
     $('.saleslist').toggle('slow');
     $('.salesentry').show();
     var currentTime = new Date();
     $("#txtentrydate").datepicker().datepicker("setDate", currentTime);
-    Bindddl_Data($('#ddlcustomer'), '/Customer/Getcustomerdropdown');
+    Drobdownbindsearch($('#ddlcustomer'), '/Customer/Getcustomerdropdown');
+    getinvoiceno();
     
 }
 function closedata() {
@@ -360,11 +366,14 @@ function closedata() {
     LoadData()
 
 }
-
 var Gstdetail = [];
-
 function Cal_Amount() {
-
+ 
+    if ($('#hf_statesysid').val() == 0 || $('#hf_statesysid').val() == '' || $('#hf_statesysid').val() == null || $('#hf_statesysid').val() == undefined)
+    {
+        toastr.error('please check delear details')
+        return false;
+    }
     Gstdetail = [];
     var discount, taxtype = '';
     var taxdesign5gst = '',
@@ -384,7 +393,7 @@ function Cal_Amount() {
         if ($('.del', this).val() != 'Deleted') {
             if ($('#ddltaxtype').val() == 'Exclusive') {
                 if ($('.ddltype', this).val() == 'System') {
-
+                   
                     if ($('.qty', this).val() != 'NaN' && $('.qty', this).val() != '') {
 
                         if ($('.salesprice', this).val() != '') {
@@ -397,14 +406,24 @@ function Cal_Amount() {
 
                         taxdesign18gst = '';
                         gst18 = '';
+                        if ($('#hf_statesysid').val() == '30') {
+                            taxamount18gst = taxamount18gst + ($('.amount', this).val() * 18 / 100);
 
-                        taxamount18gst = taxamount18gst + ($('.amount', this).val() * 18 / 100);
+                            amount = taxamount18gst / 2;
+                            taxdesign18gst = `</br><label>SGST 9% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
+                            taxdesign18gst = taxdesign18gst + `</br><label>CGST 9% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
+                            $('.hftaxamount', this).val($('.amount', this).val() * 18 / 100);
+                            $('.hftaxid', this).val('3');
 
-                        amount = taxamount18gst / 2;
-                        taxdesign18gst = `</br><label>SGST 9% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
-                        taxdesign18gst = taxdesign18gst + `</br><label>CGST 9% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
-                        $('.hftaxamount', this).val($('.amount', this).val() * 18 / 100);
-                        $('.hftaxid', this).val('3');
+                        }
+                        else
+                        {
+                            taxamount18gst = taxamount18gst + ($('.amount', this).val() * 18 / 100);
+                            taxdesign18gst = taxdesign18gst + `</br><label>IGST 18% :</label><label style="margin-left:10px"> ` + parseFloat(taxamount18gst).toFixed(2) + `</label>`
+                            $('.hftaxamount', this).val($('.amount', this).val() * 18 / 100);
+                            $('.hftaxid', this).val('3');
+                        }
+                      
 
 
 
@@ -419,46 +438,88 @@ function Cal_Amount() {
                     }
 
                     let amount;
+                    if ($('#hf_statesysid').val() == '30') {
+                        switch ($('.hftaxid', this).val()) {
 
-                    switch ($('.hftaxid', this).val()) {
-                        case '3':
-                            taxdesign18gst = '';
-                            gst18 = '';
-                            $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(18) / 100);
+                            case '3':
+                                taxdesign18gst = '';
+                                gst18 = '';
+                                $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(18) / 100);
 
-
-                            taxamount18gst = taxamount18gst + (parseFloat($('.amount', this).val()) * parseFloat(18) / 100);
-                            amount = taxamount18gst / 2;
-                            taxdesign18gst = `</br><label>SGST 9% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
-                            taxdesign18gst = taxdesign18gst + `</br><label>CGST 9% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
-                            break
-                        case '8':
-                            taxdesign28gst = '';
-                            gst28 = '';
-                            $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(28) / 100);
-                            taxamount28gst = taxamount28gst + (parseFloat($('.amount', this).val()) * parseFloat(28) / 100);
-                            amount = taxamount28gst / 2;
-                            taxdesign28gst = `</br><label>SGST 14% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
-                            taxdesign28gst = taxdesign28gst + `</br><label>CGST 14% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
-                            break
-                        case '6':
-                            taxdesign5gst = '';
-                            $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(5) / 100);
-                            taxamount5gst = taxamount5gst + (parseFloat($('.amount', this).val()) * parseFloat(5) / 100);
-                            amount = taxamount5gst / 2;
-                            taxdesign5gst = `</br><label>SGST 2.5% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
-                            taxdesign5gst = taxdesign5gst + `</br><label>CGST 2.5% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
-                            break
-                        case '5':
-                            taxdesign12gst = '';
-                            gst12 = '';
-                            $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(12) / 100);
-                            taxamount12gst = taxamount12gst + (parseFloat($('.amount', this).val()) * parseFloat(12) / 100);
-                            amount = taxamount12gst / 2;
-                            taxdesign12gst = `</br><label>SGST 6% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
-                            taxdesign12gst = taxdesign12gst + `</br><label>CGST 6% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
-                            break
+                                taxamount18gst = taxamount18gst + (parseFloat($('.amount', this).val()) * parseFloat(18) / 100);
+                                amount = taxamount18gst / 2;
+                                taxdesign18gst = `</br><label>SGST 9% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
+                                taxdesign18gst = taxdesign18gst + `</br><label>CGST 9% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
+                                break
+                            case '8':
+                                taxdesign28gst = '';
+                                gst28 = '';
+                                $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(28) / 100);
+                                taxamount28gst = taxamount28gst + (parseFloat($('.amount', this).val()) * parseFloat(28) / 100);
+                                amount = taxamount28gst / 2;
+                                taxdesign28gst = `</br><label>SGST 14% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
+                                taxdesign28gst = taxdesign28gst + `</br><label>CGST 14% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
+                                break
+                            case '6':
+                                taxdesign5gst = '';
+                                $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(5) / 100);
+                                taxamount5gst = taxamount5gst + (parseFloat($('.amount', this).val()) * parseFloat(5) / 100);
+                                amount = taxamount5gst / 2;
+                                taxdesign5gst = `</br><label>SGST 2.5% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
+                                taxdesign5gst = taxdesign5gst + `</br><label>CGST 2.5% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
+                                break
+                            case '5':
+                                taxdesign12gst = '';
+                                gst12 = '';
+                                $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(12) / 100);
+                                taxamount12gst = taxamount12gst + (parseFloat($('.amount', this).val()) * parseFloat(12) / 100);
+                                amount = taxamount12gst / 2;
+                                taxdesign12gst = `</br><label>SGST 6% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
+                                taxdesign12gst = taxdesign12gst + `</br><label>CGST 6% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
+                                break
+                        }
                     }
+                    else
+                    {
+                        switch ($('.hftaxid', this).val()) {
+
+                            case '3':
+                                taxdesign18gst = '';
+                                gst18 = '';
+                                $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(18) / 100);
+
+                                taxamount18gst = taxamount18gst + (parseFloat($('.amount', this).val()) * parseFloat(18) / 100);
+
+                                taxdesign18gst = taxdesign18gst + `</br><label>IGST 18% :</label><label style="margin-left:10px"> ` + parseFloat(taxamount18gst).toFixed(2) + `</label>`
+                                break
+                            case '8':
+                                taxdesign28gst = '';
+                                gst28 = '';
+                                $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(28) / 100);
+                                taxamount28gst = taxamount28gst + (parseFloat($('.amount', this).val()) * parseFloat(28) / 100);
+                                
+                              
+                                taxdesign28gst = taxdesign28gst + `</br><label>IGST 28% :</label><label style="margin-left:10px"> ` + parseFloat(taxamount28gst).toFixed(2) + `</label>`
+                                break
+                            case '6':
+                                taxdesign5gst = '';
+                                $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(5) / 100);
+                                taxamount5gst = taxamount5gst + (parseFloat($('.amount', this).val()) * parseFloat(5) / 100);
+
+                                taxdesign5gst = taxdesign5gst + `</br><label>IGST 5% :</label><label style="margin-left:10px"> ` + parseFloat(taxamount5gst).toFixed(2) + `</label>`
+                                break
+                            case '5':
+                                taxdesign12gst = '';
+                                gst12 = '';
+                                $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(12) / 100);
+                                taxamount12gst = taxamount12gst + (parseFloat($('.amount', this).val()) * parseFloat(12) / 100);
+                               
+                                taxdesign12gst = taxdesign12gst + `</br><label>IGST 12% :</label><label style="margin-left:10px"> ` + parseFloat(taxamount12gst).toFixed(2) + `</label>`
+
+                                break
+                        }
+                    }
+                  
                     total = parseFloat(total) + parseFloat($('.amount', this).val());
                 }
 
@@ -474,18 +535,30 @@ function Cal_Amount() {
                         }
                         total = parseFloat(total) + parseFloat($('.amount', this).val());
 
+                        if ($('#hf_statesysid').val() == '30') {
+                            taxdesign18gst = '';
+                            gst18 = '';
+                            //  parseFloat(element.sgst + element.cgst) / (100 + parseFloat(element.sgst + element.cgst)
+                            taxamount18gst = taxamount18gst + ($('.amount', this).val() * 18 / (100 + 18));
+
+                            amount = taxamount18gst / 2;
+                            taxdesign18gst = `</br><label>SGST 9% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
+                            taxdesign18gst = taxdesign18gst + `</br><label>CGST 9% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
+                            $('.hftaxamount', this).val($('.amount', this).val() * 18 / (100 + 18));
+                            $('.hftaxid', this).val('3');
+                        }
+                        else
+                        {
+
+                            taxamount18gst = taxamount18gst + ($('.amount', this).val() * 18 / (100+18));
+                            taxdesign18gst = taxdesign18gst + `</br><label>IGST 18% :</label><label style="margin-left:10px"> ` + parseFloat(taxamount18gst).toFixed(2) + `</label>`
+                            $('.hftaxamount', this).val($('.amount', this).val() * 18 / (100 + 18));
+                            $('.hftaxid', this).val('3');
 
 
-                        taxdesign18gst = '';
-                        gst18 = '';
-                        //  parseFloat(element.sgst + element.cgst) / (100 + parseFloat(element.sgst + element.cgst)
-                        taxamount18gst = taxamount18gst + ($('.amount', this).val() * 18 / (100 + 18));
+                        }
 
-                        amount = taxamount18gst / 2;
-                        taxdesign18gst = `</br><label>SGST 9% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
-                        taxdesign18gst = taxdesign18gst + `</br><label>CGST 9% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
-                        $('.hftaxamount', this).val($('.amount', this).val() * 18 / (100 + 18));
-                        $('.hftaxid', this).val('3');
+                    
 
 
 
@@ -500,43 +573,84 @@ function Cal_Amount() {
                     }
 
                     let amount;
+                    if ($('#hf_statesysid').val() == '30') {
+                        switch ($('.hftaxid', this).val()) {
+                            case '3':
+                                taxdesign18gst = '';
+                                gst18 = '';
+                                $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(18) / (100 + 18));
+                                taxamount18gst = taxamount18gst + (parseFloat($('.amount', this).val()) * parseFloat(18) / (100 + 18));
+                                amount = taxamount18gst / 2;
+                                taxdesign18gst = `</br><label>SGST 9% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
+                                taxdesign18gst = taxdesign18gst + `</br><label>CGST 9% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
+                                break
+                            case '8':
+                                taxdesign28gst = '';
+                                gst28 = '';
+                                $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(28) / (100 + 28));
+                                taxamount28gst = taxamount28gst + (parseFloat($('.amount', this).val()) * parseFloat(28) / (100 + 28));
+                                amount = taxamount28gst / 2;
+                                taxdesign28gst = `</br><label>SGST 14% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
+                                taxdesign28gst = taxdesign28gst + `</br><label>CGST 14% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
+                                break
+                            case '6':
+                                taxdesign5gst = '';
+                                $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(5) / (100 + 5));
+                                taxamount5gst = taxamount5gst + (parseFloat($('.amount', this).val()) * parseFloat(5) / (100 + 5));
+                                amount = taxamount5gst / 2;
+                                taxdesign5gst = `</br><label>SGST 2.5% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
+                                taxdesign5gst = taxdesign5gst + `</br><label>CGST 2.5% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
+                                break
+                            case '5':
+                                taxdesign12gst = '';
+                                gst12 = '';
+                                $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(12) / (100 + 12));
+                                taxamount12gst = taxamount12gst + (parseFloat($('.amount', this).val()) * parseFloat(12) / (100 + 12));
+                                amount = taxamount12gst / 2;
+                                taxdesign12gst = `</br><label>SGST 6% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
+                                taxdesign12gst = taxdesign12gst + `</br><label>CGST 6% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
+                                break
+                        }
+                    }
+                    else
+                    {
+                        switch ($('.hftaxid', this).val()) {
 
-                    switch ($('.hftaxid', this).val()) {
-                        case '3':
-                            taxdesign18gst = '';
-                            gst18 = '';
-                            $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(18) / (100 + 18));
-                            taxamount18gst = taxamount18gst + (parseFloat($('.amount', this).val()) * parseFloat(18) / (100 + 18));
-                            amount = taxamount18gst / 2;
-                            taxdesign18gst = `</br><label>SGST 9% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
-                            taxdesign18gst = taxdesign18gst + `</br><label>CGST 9% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
-                            break
-                        case '8':
-                            taxdesign28gst = '';
-                            gst28 = '';
-                            $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(28) / (100 + 28));
-                            taxamount28gst = taxamount28gst + (parseFloat($('.amount', this).val()) * parseFloat(28) / (100 + 28));
-                            amount = taxamount28gst / 2;
-                            taxdesign28gst = `</br><label>SGST 14% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
-                            taxdesign28gst = taxdesign28gst + `</br><label>CGST 14% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
-                            break
-                        case '6':
-                            taxdesign5gst = '';
-                            $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(5) / (100 + 5));
-                            taxamount5gst = taxamount5gst + (parseFloat($('.amount', this).val()) * parseFloat(5) / (100 + 5));
-                            amount = taxamount5gst / 2;
-                            taxdesign5gst = `</br><label>SGST 2.5% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
-                            taxdesign5gst = taxdesign5gst + `</br><label>CGST 2.5% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
-                            break
-                        case '5':
-                            taxdesign12gst = '';
-                            gst12 = '';
-                            $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(12) / (100 + 12));
-                            taxamount12gst = taxamount12gst + (parseFloat($('.amount', this).val()) * parseFloat(12) / (100 + 12));
-                            amount = taxamount12gst / 2;
-                            taxdesign12gst = `</br><label>SGST 6% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
-                            taxdesign12gst = taxdesign12gst + `</br><label>CGST 6% :</label><label style="margin-left:10px"> ` + parseFloat(amount).toFixed(2) + `</label>`
-                            break
+                            case '3':
+                                taxdesign18gst = '';
+                                gst18 = '';
+                                $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(18) / (100+18));
+
+                                taxamount18gst = taxamount18gst + (parseFloat($('.amount', this).val()) * parseFloat(18) / (100 + 18));
+
+                                taxdesign18gst = taxdesign18gst + `</br><label>IGST 18% :</label><label style="margin-left:10px"> ` + parseFloat(taxamount18gst).toFixed(2) + `</label>`
+                                break
+                            case '8':
+                                taxdesign28gst = '';
+                                gst28 = '';
+                                $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(28) / (100 + 28));
+                                taxamount28gst = taxamount28gst + (parseFloat($('.amount', this).val()) * parseFloat(28) / (100 + 28));
+
+
+                                taxdesign28gst = taxdesign28gst + `</br><label>IGST 28% :</label><label style="margin-left:10px"> ` + parseFloat(taxamount28gst).toFixed(2) + `</label>`
+                                break
+                            case '6':
+                                taxdesign5gst = '';
+                                $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(5) / (100 + 5));
+                                taxamount5gst = taxamount5gst + (parseFloat($('.amount', this).val()) * parseFloat(5) / (100+5));
+
+                                taxdesign5gst = taxdesign5gst + `</br><label>IGST 5% :</label><label style="margin-left:10px"> ` + parseFloat(taxamount5gst).toFixed(2) + `</label>`
+                                break
+                            case '5':
+                                taxdesign12gst = '';
+                                gst12 = '';
+                                $('.hftaxamount', this).val(parseFloat($('.amount', this).val()) * parseFloat(12) / (100 + 12));
+                                taxamount12gst = taxamount12gst + (parseFloat($('.amount', this).val()) * parseFloat(12) / (100 + 12));
+
+                                taxdesign12gst = taxdesign12gst + `</br><label>IGST 12% :</label><label style="margin-left:10px"> ` + parseFloat(taxamount12gst).toFixed(2) + `</label>`
+
+                                break
+                        }
                     }
                     total = parseFloat(total) + parseFloat($('.amount', this).val());
                 }
@@ -552,22 +666,22 @@ function Cal_Amount() {
     $('.gstdetails').append(taxdesign5gst + taxdesign12gst + taxdesign18gst + taxdesign28gst);
 
     if ($('#ddltaxtype').val() == 'Exclusive') {
+        $('#txt_taxable_amout').val(total)
         let sum = total + taxamount5gst + taxamount12gst + taxamount18gst + taxamount28gst;
         $('#txttotal').val(parseFloat(sum).toFixed(2));
     }
     else {
+        $('#txt_taxable_amout').val(total - (taxamount5gst + taxamount12gst + taxamount18gst + taxamount28gst))
         let sum = total;
         $('#txttotal').val(parseFloat(sum).toFixed(2));
     }
 
     $('#hftotal').val($('#txttotal').val())
 }
-
 function Delete(ID) {
 
     deletedata(ID, "/Bill/Delete/");
 }
-
 function cleardata() {
 
     $("#detailsTable tbody").find("tr:gt(0)").remove();
@@ -587,6 +701,13 @@ function cleardata() {
     $(row).find('.hsncode').val("");
     $(row).find('.qty').val("");
     $(row).find('.amount').val("");
+    $(row).find('.ddltype').val("System");
+    $(row).find('.selecpick').empty();
+    $(row).find('.selecpick').append(`<select id="ddlspare" onchange="getsparedetail(this)" required data-live-search="true" class="selectpicker ddlspare" data-style="btn-normal"></select>`);
+    $("#detailsTable tbody").append(row)
+    Drobdownbindsearch($('.ddlspare'), '/ProductMap/Getdropdown_System');
+    Drobdownbindsearch($('#ddlcustomer'), '/Customer/Getcustomerdropdown');
+ 
     $('#tblpayment tbody').find("tr:gt()").remove();
     $('#tblpayment tbody tr').each(function (i, e) {
 
@@ -597,12 +718,12 @@ function cleardata() {
 
 
     })
-    Bindddl_Data($(row).find('.ddlspare'), '/ProductMap/Getdropdown_System');
+   
     $('#txtpayamount').val('0');
     $('#lblbalance').val('0');
-    $('#txtinvoiceno').val('');
+    $('#txt_taxable_amout').val('');
+    getinvoiceno();
 }
-
 function getsparedetail(ctrl) {
     let url = '';
 
@@ -669,7 +790,6 @@ $("#detailsTable tbody").on('click', '.del', function () {
     $(currentRow).find('.lbldel').attr("style", "display: block;");
     Cal_Amount();
 });
-
 function Add_Rows() {
     var row = $("#detailsTable .trbody").last().clone();
     clears(row);
@@ -689,7 +809,11 @@ function clears(row) {
     $(row).find('.hsncode').val("");
     $(row).find('.qty').val("0");
     $(row).find('.amount').val("0");
-    Bindddl_Data($(row).find('.ddlspare'), '/ProductMap/Getdropdown_System');
+    (row).find('.ddltype').val("System");
+    $(row).find('.selecpick').empty();
+    $(row).find('.selecpick').append(`<select id="ddlspare" onchange="getsparedetail(this)" required data-live-search="true" class="selectpicker ddlspare" data-style="btn-normal"></select>`);
+
+    Drobdownbindsearch($(row).find('.ddlspare'), '/ProductMap/Getdropdown_System');
 
     $("td input:text", row).val("");
     $('td .lbldel', row).attr("style", "display: none;");
@@ -699,18 +823,22 @@ function clears(row) {
     $("td input[type=time]", row).val('');
 
 }
-
 function getdropdown(ctrl) {
 
+
     if ($(ctrl).val() == 'System') {
-        Bindddl_Data($(ctrl).closest('tr').find('.ddlspare'), '/ProductMap/Getdropdown_System');
+        $(ctrl).closest('tr').find('.selecpick').empty();
+        $(ctrl).closest('tr').find('.selecpick').append(`<select id="ddlspare" required data-live-search="true" class="selectpicker ddlspare" data-style="btn-normal"></select>`);
+
+        Drobdownbindsearch($(ctrl).closest('tr').find('.ddlspare'), '/ProductMap/Getdropdown_System');
     }
     else {
-        Bindddl_Data($(ctrl).closest('tr').find('.ddlspare'), '/Sparepart/Getdropdown_Spare');
+        $(ctrl).closest('tr').find('.selecpick').empty();
+        $(ctrl).closest('tr').find('.selecpick').append(`<select id="ddlspare"  onchange="getsparedetail(this)" required data-live-search="true" class="selectpicker ddlspare" data-style="btn-normal"></select>`);
+        Drobdownbindsearch($(ctrl).closest('tr').find('.ddlspare'), '/Sparepart/Getdropdown_Spare');
     }
 
 }
-
 function Add_paymentRow() {
     var row = $("#tblpayment tbody tr").last().clone();
     clear(row);
@@ -722,7 +850,6 @@ function Add_paymentRow() {
     $('#tblpayment').append(row);
     return false;
 }
-
 function Cal_Balance() {
     let total = 0
 
@@ -756,4 +883,39 @@ function Cal_Roundoff() {
     }
     Cal_Balance();
 
+}
+ function getcustomerstate() {
+   
+     $.ajax({
+         url:  '/Customer/GetbyID',
+         data: "{ 'sysid': '" + $('#ddlcustomer').val() + "'}",
+         dataType: "json",
+         type: "POST",
+         contentType: "application/json; charset=utf-8",
+         success: function (data) {
+           
+             var parsed = JSON.parse(data);
+             if (parsed.length == 1) {
+                 $.map(parsed, function (Item) {
+                    
+                     
+                     $('#hf_statesysid').val(Item.state);
+                     Cal_Amount();
+                 });
+             } else {
+
+             }
+
+         },
+         error: function (response) {
+             var parsed = JSON.parse(response.responseText);
+             Error_Msg(parsed.Message);
+             d.resolve();
+         },
+         failure: function (response) {
+             var parsed = JSON.parse(response.responseText);
+             Error_Msg(parsed.Message);
+             d.resolve();
+         }
+     });
 }

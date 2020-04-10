@@ -2,6 +2,11 @@
 @{
     ViewBag.Title = "ProductMap";
 }
+<style>
+    .btn-normal {
+        border: 1px solid #e3e3e3;
+    }
+</style>
 
 <div class="row">
     <div class="col-xl-12 list">
@@ -113,16 +118,16 @@
                                         <table id="detailsTable" class="table m-0 table-colored-bordered table-bordered-info" style="border-collapse: collapse; border-spacing: 0; width:100%;">
                                             <thead>
                                                 <tr>
-                                                    <th>S.no</th>
-                                                    <th>Spare Name</th>
+                                                    <th style="width:10%">S.no</th>
+                                                    <th style="width:50%">Spare Name</th>
                                                     <th style="width:100px">HSN Code</th>
-                                                    <th style="width:140px">Tax</th>
+                                                    @*<th style="width:140px">Tax</th>*@
                                                     @*<th style="width:140px">Purchase Price</th>*@
-                                                    <th style="width:140px">Sale Price</th>
+                                                    @*<th style="width:140px">Sale Price</th>*@
 
                                                     <th style="width:140px">Qty</th>
-                                                    <th style="width:140px">Amount</th>
-                                                    <th>Del</th>
+                                                    @*<th style="width:140px">Amount</th>*@
+                                                    <th style="width:10%">Del</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -130,10 +135,14 @@
                                                     <td class="sno">1</td>
                                                     <td>
                                                         <div class="form-group">
+                                                            <div class="selecpick">
+                                                                <select onchange="getsparedetail(this)" required data-live-search="true" class="selectpicker ddlspare" data-style="btn-normal"></select>
+                                                            </div>
+
                                                             <input type="hidden" id="hfdetailsysid" class="hfdetailsysid  form-control" />
                                                             <input type="hidden"  class="hftaxid  form-control" />
-                                                            <select onchange="getsparedetail(this)" class="form-control ddl ddlspare">
-                                                            </select>
+                                                          
+                                                         
                                                         </div>
                                                     </td>
                                                     <td>
@@ -141,36 +150,32 @@
                                                             <input type="text" disabled="disabled" style="background-color:#fff" class="hsncode numeric textrequired form-control" />
                                                         </div>
                                                     </td>
-                                                    <td>
+                                                    @*<td>
                                                         <div class="form-group">
                                                             <input type="text" disabled="disabled" style="background-color:#fff" class="taxname numeric textrequired form-control" />
+                                                        </div>
+                                                    </td>*@
+                                                   
+
+                                                    @*<td>
+                                                        <div class="form-group">
+                                                            <input type="text"  disabled="disabled" style="background-color:#fff" class="salesprice numeric textrequired form-control" />
+                                                        </div>
+                                                    </td>*@
+
+
+
+
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" id="qty"  class="qty numeric textrequired form-control" />
                                                         </div>
                                                     </td>
                                                     @*<td>
                                                         <div class="form-group">
-                                                            <input type="text"  disabled="disabled" style="background-color:#fff" class="purchaseprice numeric textrequired form-control" />
-                                                        </div>
-                                                    </td>*@
-
-                                                    <td>
-                                                        <div class="form-group">
-                                                            <input type="text"  disabled="disabled" style="background-color:#fff" class="salesprice numeric textrequired form-control" />
-                                                        </div>
-                                                    </td>
-
-
-
-
-                                                    <td>
-                                                        <div class="form-group">
-                                                            <input type="text" id="qty" onblur="Cal_Amount()" class="qty numeric textrequired form-control" />
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-group">
                                                             <input type="text" disabled="disabled" style="background-color:#fff"  class="amount numeric textrequired form-control" />
                                                         </div>
-                                                    </td>
+                                                    </td>*@
 
 
                                                     <td>
@@ -184,7 +189,7 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <td colspan="8">
+                                                    <td colspan="5">
                                                         <div class="fa-pull-right">
                                                             <button type="button" id="InsertRow" class="btn btn-sm btn-success Footer" onclick="Add_Rows()"><i class="fa fa-plus-circle"></i>&nbsp;Add Item</button>
                                                         </div>

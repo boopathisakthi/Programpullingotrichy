@@ -1,7 +1,8 @@
 ﻿
 $(document).ready(function () {
     LoadData();
-    Bindddl_Data($('#ddlsupplier'), '/Customer/GetSupplierdropdown');
+    Drobdownbindsearch($('#ddlsupplier'), '/Customer/GetSupplierdropdown');
+    Drobdownbindsearch($('.ddlspare'), '/Sparepart/Getdropdown_Spare');
     closedata();
 })
 
@@ -11,10 +12,10 @@ function saveprocess() {
         var Deatil = [];
 
         $('#detailsTable tbody tr').each(function (index, ele) {
-            if ($('.ddlspare', this).val() != '' && $('.ddlspare', this).val() != 0) {
+            if($('.ddlspare', this).find('option:selected').val() != undefined && $('.ddlspare', this).find('option:selected').val() !=''){
                 let details = {
                     sysid: $('.hfdetailsysid', this).val(),
-                    spare_sysid: $('.ddlspare', this).val(),
+                    spare_sysid: $('.ddlspare', this).find('option:selected').val(),
                     sparename: $('.ddlspare', this).find('option:selected').text(),
                     purchaseprice: $('.purchaseprice', this).val(),
                     hsncode: $('.hsncode', this).val(),
@@ -73,7 +74,7 @@ function saveprocess() {
             sysid: $("#hfsysid").val(),
             entrydate: $("#txtentrydate").val(),
             description: $('#txtdescription').val(),
-            suppliersysid: $('#ddlsupplier').val(),
+            suppliersysid: $('#ddlsupplier').find('option:selected').val(),
             taxtype: $('#ddltaxtype').val(),
             roundoff: $("#txtroundoff").val(),
             roundoff_type: $("#ddlroundoff_type").val(),
@@ -125,8 +126,10 @@ function getbyID(SysId) {
                 $("#txttotal").val(res.result.total);
                 $("#txtroundoff").val(res.result.roundoff);
                 $("#ddlroundoff_type").val(res.result.roundoff_type);
+
+                $('#ddlsupplier').selectpicker('val', res.result.suppliersysid);
                // $("#txttotal").val(res.result.total);
-                BindddlDataele($('#ddlsupplier'), '/Customer/GetSupplierdropdown', res.result.suppliersysid);
+               // BindddlDataele($('#ddlsupplier'), '/Customer/GetSupplierdropdown', res.result.suppliersysid);
                 $.each(res.result.SpareDetails, function (i, v) {
                     if (i == 0) {
                         var row = $("#detailsTable .trbody");
@@ -136,7 +139,11 @@ function getbyID(SysId) {
                         $(row).find('.hsncode').val(v.hsncode);
                         $(row).find('.qty').val(v.qty);
                         $(row).find('.hftaxname').val(v.taxname);
-                        BindddlDataele($(row).find('.ddl'), '/Sparepart/Getdropdown_Spare', v.spare_sysid);
+
+                        $(row).find('.selecpick').empty();
+                        $(row).find('.selecpick').append(`<select id="ddlspare" onchange="getsparedetail(this)" required data-live-search="true" class="selectpicker ddlspare" data-style="btn-normal"></select>`);
+
+                        Drobdownbindsearchwithid($(row).find('.ddlspare'), '/Sparepart/Getdropdown_Spare', v.spare_sysid);
 
                         // $(row).find('.ddlspare').val(v.spare_sysid);
 
@@ -174,7 +181,9 @@ function getbyID(SysId) {
                         $(row).find('.qty').val(v.qty);
                         $(row).find('.hftaxname').val(v.taxname);
 
-                        BindddlDataele($(row).find('.ddlspare'), '/Sparepart/Getdropdown_Spare', v.spare_sysid);
+                        $(row).find('.selecpick').empty();
+                        $(row).find('.selecpick').append(`<select id="ddlspare" onchange="getsparedetail(this)" required data-live-search="true" class="selectpicker ddlspare" data-style="btn-normal"></select>`);
+                        Drobdownbindsearchwithid($(row).find('.ddlspare'), '/Sparepart/Getdropdown_Spare', v.spare_sysid);
 
                         $(row).find('.ddlspare').val(v.spare_sysid);
 
@@ -399,14 +408,16 @@ function Cal_Amount() {
     if ($('#ddltaxtype').val() == 'Exclusive') {
         let sum = total + taxamount5gst + taxamount12gst + taxamount18gst + taxamount28gst;
         $('#txttotal').val(parseFloat(sum).toFixed(2));
+        $('#hftotal').val(parseFloat(sum).toFixed(2));
     }
     else {
         let sum = total;
         $('#txttotal').val(parseFloat(sum).toFixed(2));
+        $('#hftotal').val(parseFloat(sum).toFixed(2));
     }
 
   
-    $('#hftotal').val(parseFloat(sum).toFixed(2));
+ 
    
 
 }
@@ -442,9 +453,12 @@ function cleardata() {
     $(row).find('.hsncode').val("");
     $(row).find('.qty').val("0");
     $(row).find('.amount').val("0");
+    $(row).find('.selecpick').empty();
+    $(row).find('.selecpick').append(`<select id="ddlspare" onchange="getsparedetail(this)" required data-live-search="true" class="selectpicker ddlspare" data-style="btn-normal"></select>`);
+   // $("#detailsTable tbody").append(row)
 
-    Bindddl_Data($(row).find('.ddlspare'), '/Sparepart/Getdropdown_Spare');
-    Bindddl_Data($('#ddlsupplier'), '/Customer/GetSupplierdropdown');
+    Drobdownbindsearch($(row).find('.ddlspare'), '/Sparepart/Getdropdown_Spare');
+    Drobdownbindsearch($('#ddlsupplier'), '/Customer/GetSupplierdropdown');
     $('#txtpayamount').val('0');
     $('#lblbalance').val('0');
 }
@@ -520,11 +534,13 @@ function clears(row) {
     $(row).find('.purchaseprice').val("");
     $(row).find('.hsncode').val("");
 
-
-
+    $(row).find('.selecpick').empty();
+    $(row).find('.selecpick').append(`<select id="ddlspare" onchange="getsparedetail(this)" required data-live-search="true" class="selectpicker ddlspare" data-style="btn-normal"></select>`);
 
     $(row).find('.qty').val("");
-    Bindddl_Data($(row).find('.ddlspare'), '/Sparepart/Getdropdown_Spare');
+
+
+    Drobdownbindsearch($(row).find('.ddlspare'), '/Sparepart/Getdropdown_Spare');
     $("td input:text", row).val("");
     $('td .lbldel', row).attr("style", "display: none;");
     $("td button[type=button]", row).val('Delete');

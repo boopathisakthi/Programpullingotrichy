@@ -1,6 +1,4 @@
-﻿
-
-/*-----------------------------------bind datatables ------------------------------------*/
+﻿/*-----------------------------------bind datatables ------------------------------------*/
 
 function binddata(tablename, uri, data) {
    
@@ -126,6 +124,7 @@ function baindatataparams(tablename, uri, data, fileparameter) {
         oTable.draw();
     });
 }
+
 function binddataview(tablename, uri, data) {
 
     var datacount = data.length;
@@ -402,7 +401,6 @@ var Categories = []
 function BindddlData(element, Url) {
     if (Categories.length == 0) {
         //ajax function for fetch data
-
         $.ajax({
             type: "GET",
             url: Url,
@@ -535,12 +533,7 @@ function Parameterbinddata(tablename, uri, data, FilterParameter) {
     for (i = 0; i < datacount; i++) {
         data[i] = eval({ "data": data[i], "name": data[i], "autoWidth": true });
     }
-    //data[datacount] = eval({
-    //    "data": "Sysid", "width": "50px", "render": function (data) {
-    //        return '<a style="padding:1px;" class="btn btn-icon waves-effect btn-white m-b-5" href="#" onclick="return getByParameter(' + data + ')"><i style="color:teal;" class="far fa-edit"></i> Edit </a>';
-    //    }
-
-    //});
+  
 
     $(tablename).dataTable().fnDestroy();
 
@@ -569,4 +562,112 @@ function Parameterbinddata(tablename, uri, data, FilterParameter) {
         //hit search on server
         oTable.draw();
     });
+}
+
+function Parameterbindwithviewdata(tablename, uri, data, FilterParameter) {
+
+    var datacount = data.length;
+ 
+    for (i = 0; i < datacount; i++) {
+        data[i] = eval({ "data": data[i], "name": data[i], "autoWidth": true });
+    }
+   
+    data[datacount] = eval({
+        "data": "sysid", "width": "50px", "render": function (data) {
+            return '<a style="padding:1px;" class="btn btn-icon waves-effect btn-white m-b-5" href="#" onclick="return getdetails(' + data + ')"><i style="color:teal;" class="far fa-eye"></i>  </a>';
+        }
+    });
+
+    $(tablename).dataTable().fnDestroy();
+
+    $(tablename).DataTable({
+        "ajax": {
+            "url": uri,
+            "type": "POST",
+            "datatype": "json",
+            "data": FilterParameter
+        },
+        "columns": data,
+        "serverSide": "true",
+        "order": [0, "desc"],
+        "dom": '<"top">rt<"bottom"<"row"<"col-md-2"><"col-md-3"><"col-md-4">>><"clear">',
+        "processing": "true",
+        "language": {
+            "processing": "processing ... please wait"
+        }
+    });
+    oTable = $(tablename).DataTable();
+    $('#btnSearch').click(function () {
+        //Apply search for Employee Name // DataTable column index 0
+        oTable.columns(0).search($('#searchby').val().trim());
+        //Apply search for Country // DataTable column index 3
+        oTable.columns(3).search($('#searchtext').val().trim());
+        //hit search on server
+        oTable.draw();
+    });
+}
+
+
+var ddllist = []
+function Drobdownbindsearch(element, Url) {
+    ddllist = '';
+    if (ddllist.length == 0) {
+        $.ajax({
+            type: "GET",
+            url: Url,
+            success: function (data) {
+                ddllist = data;
+                renderdatas(element);
+                //$(element).selectpicker('val','0');
+
+            }
+        })
+    }
+    else {
+        //render catagory to the element
+        renderdatas(element);
+    }
+}
+function renderdatas(element) {
+    var $ele = $(element);
+    $ele.empty();
+    $ele.append($('<option/>').val('').text('Select'));
+    //  $(element).append('<option value="0"> Select </option>');
+    $.each(ddllist, function (i, val) {
+
+        $ele.append($('<option/>').val(val.sysid).text(val.name));
+    })
+    $(element).val('0').selectpicker('refresh');
+
+}
+function Drobdownbindsearchwithid(element, Url, id) {
+    ddllist = '';
+    if (ddllist.length == 0) {
+        $.ajax({
+            type: "GET",
+            url: Url,
+            success: function (data) {
+                ddllist = data;
+                renderdatawithid(element, id);
+                //$(element).selectpicker('val','0');
+
+            }
+        })
+    }
+    else {
+        //render catagory to the element
+        renderdatawithid(element, id);
+    }
+
+}
+function renderdatawithid(element, id) {
+    var $ele = $(element);
+    $ele.empty();
+    $ele.append($('<option/>').val('').text('Select'));
+    //  $(element).append('<option value="0"> Select </option>');
+    $.each(ddllist, function (i, val) {
+
+        $ele.append($('<option/>').val(val.sysid).text(val.name));
+    })
+    $(element).val(id).selectpicker('refresh');
 }

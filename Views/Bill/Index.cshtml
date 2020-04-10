@@ -2,7 +2,11 @@
 @{
     ViewBag.Title = "SalesEntry";
 }
-
+<style>
+    .btn-normal {
+        border: 1px solid #e3e3e3;
+    }
+</style>
 <div class="row">
     <div class="col-xl-12 saleslist">
         <div class="card m-t-30">
@@ -91,8 +95,12 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
 
-                                            <label class="control-label">Invoice No:</label>
-                                            <input type="text" id="txtinvoiceno" onblur="getinvoiceno()" class="form-control numerickey" />
+                                            <label class="control-label">Invoiceno:</label>
+                                            <div class="input-group">
+                                                <h3><label id="lblbillno" class="text-purple m-b-0"></label></h3>
+
+                                            </div>
+                                            
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -111,9 +119,13 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="control-label">Dealer:</label>
-                                            <select id="ddlcustomer" class="product form-control">
+                                            <select id="ddlcustomer" onchange="getcustomerstate()" required data-live-search="true" class="selectpicker" data-style="btn-normal">
+
                                                 <option value="0">Customer</option>
                                             </select>
+                                            @*<select id="ddlcustomer" onchange="getcustomerstate()" class="product form-control">
+                                                <option value="0">Dealer</option>
+                                            </select>*@
                                         </div>
                                     </div>
 
@@ -140,11 +152,11 @@
                                         <table id="detailsTable" class="table m-0 table-colored-bordered table-bordered-info" style="border-collapse: collapse; border-spacing: 0; width:100%;">
                                             <thead>
                                                 <tr>
-                                                    <th>S.no</th>
-                                                    <th style="width:146px">Type</th>
-                                                    <th style="width:200px">Name</th>
-                                                    <th style="width:140px">HSN Code</th>
-                                                    <th style="width:140px">Sales Price</th>
+                                                    <th style="width:8%">S.no</th>
+                                                    <th style="width:15%">Type</th>
+                                                    <th style="width:30%">Name</th>
+                                                    <th style="width:10%">HSN Code</th>
+                                                    <th style="width:10%">Sales Price</th>
                                                     <th>Qty</th>
                                                     <th>Amount</th>
                                                     <th>Del</th>
@@ -170,7 +182,9 @@
                                                             <input type="hidden" class="hftaxid  form-control" />
                                                             <input type="hidden" class="hftaxname  form-control" />
                                                             <input type="hidden" class="hftaxamount  form-control" />
-                                                            <select onchange="getsparedetail(this)" class="form-control  ddlspare"></select>
+                                                            <div class="selecpick">
+                                                                <select id="ddlspare" onchange="getsparedetail(this)" required data-live-search="true" class="selectpicker ddlspare" data-style="btn-normal"></select>
+                                                            </div>
                                                         </div>
                                                     </td>
                                                     <td>
@@ -220,11 +234,15 @@
                                 <div class="row">
 
                                     <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Total(Excluding Gst):</label>
+                                            <input type="text" style="background-color:#fff" disabled="disabled" id="txt_taxable_amout" class="form-control" />
+                                        </div>
                                         <div class="gstdetails">
 
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label">Total:</label>
+                                            <label class="control-label">Total(Including Gst):</label>
                                             <input type="text" style="background-color:#fff" disabled="disabled" id="txttotal" class="form-control" />
                                         </div>
                                         <div class="form-group">
@@ -307,6 +325,7 @@
                                 <input type="hidden" id="hfsysid" />
                                 <input type="hidden" id="hf_balancepayment" />
                                 <input type="hidden" id="hftotal" />
+                                <input type="hidden" id="hf_statesysid" />
                                 <br />
                                 <div class="text-center">
                                     <button type="button" onclick="saveprocess()" id="btnsave" class="btn btn-success btn-rounded w-md waves-effect waves-light m-b-5"><i class="fa fa-save"></i>&nbsp;Save</button>

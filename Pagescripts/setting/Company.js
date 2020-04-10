@@ -14,7 +14,7 @@ function LoadData() {
     data[3] = "Mobileno";
     data[4] = "city";
     data[5] = "State";
-    Parameterbinddata("#gvcompanylist", "/Company/GetList", data);
+    Parametercompanybinddata("#gvcompanylist", "/Company/GetList", data);
 }
 
 function cleardata() {
@@ -164,4 +164,43 @@ function assignvalue(Item) {
     $('#txtpincode').val(Item.pincode),
     $('#txtaccountnumber').val(Item.accountnumber)
 }
+function Parametercompanybinddata(tablename, uri, data, FilterParameter) {
 
+    var datacount = data.length;
+    for (i = 0; i < datacount; i++) {
+        data[i] = eval({ "data": data[i], "name": data[i], "autoWidth": true });
+    }
+    data[datacount] = eval({
+        "data": "Sysid", "width": "50px", "render": function (data) {
+            return '<a style="padding:1px;" class="btn btn-icon waves-effect btn-white m-b-5" href="#" onclick="return getByParameter(' + data + ')"><i style="color:teal;" class="far fa-pencil"></i>  </a>';
+        }
+    });
+
+    $(tablename).dataTable().fnDestroy();
+
+    $(tablename).DataTable({
+        "ajax": {
+            "url": uri,
+            "type": "POST",
+            "datatype": "json",
+            "data": FilterParameter
+        },
+        "columns": data,
+        "serverSide": "true",
+        "order": [0, "desc"],
+        "dom": '<"top">rt<"bottom"<"row"<"col-md-2"><"col-md-3"><"col-md-4">>><"clear">',
+        "processing": "true",
+        "language": {
+            "processing": "processing ... please wait"
+        }
+    });
+    oTable = $(tablename).DataTable();
+    $('#btnSearch').click(function () {
+        //Apply search for Employee Name // DataTable column index 0
+        oTable.columns(0).search($('#searchby').val().trim());
+        //Apply search for Country // DataTable column index 3
+        oTable.columns(3).search($('#searchtext').val().trim());
+        //hit search on server
+        oTable.draw();
+    });
+}

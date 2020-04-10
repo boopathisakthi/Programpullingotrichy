@@ -14,17 +14,17 @@
                    
                
                 <div class="fa-pull-right panel-btns">    
-                        @*<button type="button" style="margin-top:-30px;" onclick="DownloadData()" class="btn btn-sm btn-secondary dwbtn"><i class="fa fa-download"></i> </button>*@
+
                         <button type="button" style="margin-top:-30px;" onclick="cleardata()" class="btn btn-secondary waves-effect btn-sm" data-toggle="modal" data-target="#con-close-modal1"><i class="fa fa-plus"></i>&nbsp;AddNew</button>
                   
-                        @*<button type="button" style="margin-top:-30px;" class="btn btn-secondary waves-effect btn-sm" data-toggle="modal" data-target="#con-close-modal"><i class="fa fa-plus"></i>&nbsp;Bulk Upload</button>*@
+                     
                    
                     </div>
                 <div class="fa-pull-right panel-btns">
                     <select id="ddltype" style="margin-top:-20px !important; margin-right:100px;padding-right:10px !important" onchange="LoadData()" class="form-control">
                         <option value="Customer">Dealer</option>
                         <option value="Supplier">Supplier</option>
-                        <option value="Dealer">Dealer</option>
+                       
                     </select>                  
 
                 </div>
@@ -64,7 +64,7 @@
                                     <th>Sno</th>
                                     <th>Name</th>
                                     <th>Mobile</th>                                    
-                                    <th>Companyname</th>
+                                   
                                     <th>GSTNO</th>
                                     <th>Address</th>
                                     <th>Edit</th>
@@ -133,12 +133,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="control-label">Company Name</label>
-                                                <input type="tel" class="form-control " id="txtcompanyname" />
-                                            </div>
-                                        </div>
+                                     
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="control-label">Gstno</label>
@@ -156,6 +151,52 @@
                                                 <label class="control-label">State:</label>
                                                 <select id="ddlstate" class="form-control state">
                                                     <option>Select</option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">State Code:</label>
+                                                <select id="ddlstatecode" class="form-control state">
+                                                    <option value="0">Select</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                    <option value="10">10</option>
+                                                    <option value="11">11</option>
+                                                    <option value="12">12</option>
+                                                    <option value="13">13</option>
+                                                    <option value="14">14</option>
+                                                    <option value="15">15</option>
+                                                    <option value="16">16</option>
+                                                    <option value="17">17</option>
+                                                    <option value="18">18</option>
+                                                    <option value="19">19</option>
+                                                    <option value="20">20</option>
+                                                    <option value="21">21</option>
+                                                    <option value="22">22</option>
+                                                    <option value="23">23</option>
+                                                    <option value="24">24</option>
+                                                    <option value="25">25</option>
+                                                    <option value="26">26</option>
+                                                    <option value="27">27</option>
+                                                    <option value="28">28</option>
+                                                    <option value="29">29</option>
+                                                    <option value="30">30</option>
+                                                    <option value="31">31</option>
+                                                    <option value="32">32</option>
+                                                    <option value="33" selected>33</option>
+                                                    <option value="34">34</option>
+                                                    <option value="35">35</option>
+                                                    <option value="36">36</option>
+                                                    <option value="37">37</option>
                                                 </select>
 
                                             </div>

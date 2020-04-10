@@ -2,6 +2,11 @@
 @{
     ViewBag.Title = "StockList";
 }
+<style>
+    .btn-normal {
+        border: 1px solid #e3e3e3;
+    }
+</style>
 <div class="row">
     <div class="col-xl-12">
        
@@ -113,12 +118,13 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                   
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="control-label">Supplier:</label>
-                                            <select id="ddlsupplier" class="product form-control">
-                                                <option value="0">Own</option>
+                                            <select id="ddlsupplier" required data-live-search="true" class="selectpicker" data-style="btn-normal">
+
+                                                <option value="0">Supplier</option>
                                             </select>
                                         </div>
                                     </div>
@@ -145,7 +151,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>S.no</th>
-                                                    <th>Spare Name</th>
+                                                    <th style="width:30%">Spare Name</th>
                                                     <th style="width:140px">HSN Code</th>
                                                     <th style="width:140px">Purchase Price</th>
                                                     <th>Qty</th>
@@ -162,7 +168,10 @@
                                                             <input type="hidden" class="hftaxid  form-control" />
                                                             <input type="hidden" class="hftaxamount  form-control" />
                                                             <input type="hidden" class="hftaxname  form-control" />
-                                                            <select onchange="getsparedetail(this)" class="form-control ddl ddlspare"></select>
+                                                         
+                                                            <div class="selecpick">
+                                                                <select id="ddlspare" onchange="getsparedetail(this)" required data-live-search="true" class="selectpicker ddlspare" data-style="btn-normal"></select>
+                                                            </div>
                                                         </div>
                                                     </td>
                                                     <td>

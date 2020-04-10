@@ -11,9 +11,9 @@ function LoadData() {
     data[0] = "sno";
     data[1] = "name";
     data[2] = "mobile";
-    data[3] = "companyname";
-    data[4] = "gstno";
-    data[5] = "address";
+    //data[3] = "companyname";
+    data[3] = "gstno";
+    data[4] = "address";
      var filedata = {
          type: $('#ddltype').val()
     }
@@ -31,7 +31,7 @@ function Add() {
         sysid: $('#hfsysid').val(),
         name: $('#txtname').val(),
         mobile: $('#txtmobile').val(),
-        companyname: $('#txtcompanyname').val(),
+     
         email: $('#txtemail').val(),
         gstno: $('#txtgstno').val(),
         panno: $('#txtpano').val(),
@@ -39,6 +39,7 @@ function Add() {
         description: $('#txtdesc').val(),
         address: $('#txtaddress').val(),
         state: $('#ddlstate').val(),
+        statecode: $('#ddlstatecode').val(),
     };
 
     return insertdata("#frm", Data, "/Customer/Save");
@@ -59,6 +60,7 @@ function cleardata() {
     $('#txtdesc').val("");
     $('#txtaddress').val("");
     $('#ddlstate').val("0");
+    $('#ddlstatecode').val("33")
   
 }
 function getbyID(SysId) {
@@ -78,6 +80,7 @@ function assignvalue(Item) {
     $('#txtdesc').val(Item.description);
     $('#txtaddress').val(Item.Address);
     $('#ddlstate').val(Item.state);
+    $('#ddlstatecode').val(Item.statecode)
 }
 
 function Delete(ID) {

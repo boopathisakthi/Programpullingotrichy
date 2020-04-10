@@ -1,0 +1,124 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+
+        <div class="card m-t-30">
+            <div class="card-heading ">
+                <h3 class="card-title ">Sales Report</h3>
+
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+
+                            <label class="control-label">From Date:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control  datepicker-autoclose clear" placeholder="mm/dd/yyyy" id="txtfromdate">
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-custom text-white b-0"><i class="mdi mdi-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">To Date:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control  datepicker-autoclose clear" placeholder="mm/dd/yyyy" id="txttodate">
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-custom text-white b-0"><i class="mdi mdi-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">Type:</label>
+                            <select class="form-control" id="ddltype">
+                                <option value="Spare">Spare</option>
+                                <option value="System">System</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="button" onclick="LoadData()" style="margin-top: 25px;"
+                                id="btnSearch" class="btn waves-effect waves-light btn-info">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 table-responsive">
+                        <table id="Gvlist" class="table m-0 text-center table-colored-bordered table-bordered-info table-sm" style="border-collapse: collapse; border-spacing: 0; width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>S.no</th>
+                                    <th>Name</th>
+                                    <th>HSN Code</th>
+                                    <th>Sales Count</th>
+                                    <th>Details</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="con-close-modal1" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title mt-0">SpareDetails</h4>
+                <button type="button" onclick="cleardata()" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                
+                    <div class="row">
+                        <div class="col-md-12  table-responsive">
+                            <table id="detailsTable" class="table m-0 table-colored-bordered table-bordered-info" style="border-collapse: collapse; border-spacing: 0; width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th>S.no</th>
+                                        <th>CustomerName</th>
+                                        <th>Spare Name</th>
+                                        <th>HSN Code</th>
+                                        <th>Sales Count</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="trbody"></tbody>
+
+                            </table>
+                        </div>
+                </div>
+            </div>
+            <div class="modal-footer ">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="text-center">
+
+                            <button type="button" onclick="cleardata()" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Pagescripts/Report/Sales_sparedetails.js"></script>
+}
+
+

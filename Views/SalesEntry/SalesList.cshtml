@@ -5,7 +5,11 @@
     ViewBag.Title = "SaleEntry";
 }
 
-
+<style>
+    .btn-normal{
+        border:1px solid #e3e3e3
+    }
+</style>
 
 
 
@@ -119,11 +123,12 @@
 
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="control-label">Dealer:</label>
-                                            <select id="ddlcustomer" class="product form-control">
+                                            <label>Dealer :</label>
+                                            <select id="ddlcustomer" required data-live-search="true"   class="selectpicker"  data-style="btn-normal">
+                                                  
                                                 <option value="0">Customer</option>
                                             </select>
-                                        </div>
+                                        </div>       
                                     </div>
 
 
@@ -133,15 +138,8 @@
                                             <input type="text" id="txtdesc" class="form-control" />
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="control-label">Tax Type:</label>
-                                            <select id="ddltaxtype" onchange="Cal_Amount()" class="form-control">
-                                                <option value="Exclusive">Exclusive</option>
-                                                <option value="Inclusive">Inclusive</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                 
+                                   
                                 </div>
 
                                 <div class="row">
@@ -164,22 +162,29 @@
                                                     <td class="sno">1</td>
                                                     <td>
                                                         <div class="form-group">
-
-                                                            <select onchange="getdropdown(this)" class="form-control  ddltype">
+                                                            <select onchange="getdropdown(this)" 
+                                                                    class="ddltype form-control">
                                                                 <option value="System">System</option>
                                                                 <option value="Spare">Spare</option>
-
-
                                                             </select>
+
+                                                           
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
+                                                            @*<select onchange="getsparedetail(this)"     data-live-search="true"   class="selectpicker ddlspare" data-style="btn-primary">
+                                                                        </select>*@
+                                                            <div class="selecpick">
+                                                                <select id="ddlspare"  onchange="getsparedetail(this)" required data-live-search="true" class="selectpicker ddlspare" data-style="btn-normal"></select>
+                                                            </div>
                                                             <input type="hidden" id="hfdetailsysid" class="hfdetailsysid  form-control" />
                                                             <input type="hidden" class="hftaxid  form-control" />
                                                             <input type="hidden" class="hftaxname  form-control" />
                                                             <input type="hidden" class="hftaxamount  form-control" />
-                                                            <select onchange="getsparedetail(this)" class="form-control  ddlspare"></select>
+                                                           
+                                                            @*<select  required data-live-search="true"  class="selectpicker " data-style="btn-purple" ></select>*@
+                                                   
                                                         </div>
                                                     </td>
                                                     <td>
@@ -320,6 +325,7 @@
                                 <div class="text-center">
                                     <button type="button" onclick="saveprocess()" id="btnsave" class="btn btn-success btn-rounded w-md waves-effect waves-light m-b-5"><i class="fa fa-save"></i>&nbsp;Save</button>
                                     <button type="button" onclick="closedata()" class="btn btn-warning  btn-rounded w-md waves-effect waves-light m-b-5"><i class="fas fa-quidditch"></i>&nbsp;Close</button>
+                                    @*<button type="button" onclick="cleardata()" class="btn btn-warning  btn-rounded w-md waves-effect waves-light m-b-5"><i class="fas fa-quidditch"></i>&nbsp;Clear</button>*@
 
                                 </div>
 
