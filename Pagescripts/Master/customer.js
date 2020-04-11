@@ -2,8 +2,9 @@
     BindddlData('#ddlstate', '/Company/getstate');
     LoadData();
     $(".dis").attr("disabled", "disabled");
-    //Bindddl_Data($('#ddltax'), '/Sparepart/gettax');
     
+    //Bindddl_Data($('#ddltax'), '/Sparepart/gettax');
+     
 })
 
 function LoadData() {
@@ -59,7 +60,7 @@ function cleardata() {
     $('#txtpano').val("");
     $('#txtdesc').val("");
     $('#txtaddress').val("");
-    $('#ddlstate').val("0");
+    $('#ddlstate').val("30");
     $('#ddlstatecode').val("33")
   
 }
@@ -90,9 +91,10 @@ function Delete(ID) {
 
 function show() {
     cleardata();
-    $('#ddltax').val('3');
+  
     $('#con-close-modal1').modal('show');
-
+    $("#ddlstate").val("30");
+   
 }
 function closedata() {
 

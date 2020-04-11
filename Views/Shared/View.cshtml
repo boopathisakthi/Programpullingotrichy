@@ -10,20 +10,7 @@
         @if (Model.Logintype == "Stock")
         {
           
-            <li class="has_sub">
-
-                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-chart-arc"></i><span> Create </span> <span class="menu-arrow"></span></a>
-                <ul class="list-unstyled">
-                    <li><a href='@Url.Action("Sparepart", "Sparepart")'> Spares</a></li>
-                    <li><a href='@Url.Action("Index", "Customer")'> Dealer</a></li>
-                    <li><a href='@Url.Action("Index", "Expensemasster")'>  Expense</a></li>
-                </ul>
-
-            </li>
-          
-            <li class="has_sub">
-                <a href='@Url.Action("StockList", "Stock")'><i class="fas fa-luggage-cart"></i> <span> Stock Entry </span> </a>
-            </li>
+           
            
 
 
@@ -47,6 +34,20 @@
         }
         else
         {
+            <li class="has_sub">
+
+                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-chart-arc"></i><span> Create </span> <span class="menu-arrow"></span></a>
+                <ul class="list-unstyled">
+                    <li><a href='@Url.Action("Sparepart", "Sparepart")'> Spares</a></li>
+                    <li><a href='@Url.Action("Index", "Customer")'> Dealer</a></li>
+                    <li><a href='@Url.Action("Index", "Expensemasster")'>  Expense</a></li>
+                </ul>
+
+            </li>
+
+            <li class="has_sub">
+                <a href='@Url.Action("StockList", "Stock")'><i class="fas fa-luggage-cart"></i> <span> Stock Entry </span> </a>
+            </li>
             <li class="has_sub">
                 <a href='@Url.Action("Entry", "ProductMap")'><i class="fas fa-network-wired"></i> <span> System Map</span> </a>
             </li>

@@ -677,6 +677,9 @@ function Cal_Amount() {
     }
 
     $('#hftotal').val($('#txttotal').val())
+    if ($('#hfsysid').val()) {
+        Cal_Roundoff()
+    }
 }
 function Delete(ID) {
 
@@ -856,9 +859,9 @@ function Cal_Balance() {
     $('#tblpayment tbody tr').each(function (i, ele) {
         total = parseFloat(total) + parseFloat($('.payamount', this).val());
     })
+    alert($('#txttotal').val())
 
-
-    if (parseFloat($('#txttotal').val()) >= parseFloat(total)) {
+    if (parseFloat($('#txttotal').val() == 'NaN' ? 0 : $('#txttotal').val()) >= parseFloat(total)) {
 
         $('#txtpayamount').val(parseFloat(parseFloat(total) + parseFloat($('#hf_balancepayment').val() == '' ? '0' : $('#hf_balancepayment').val())).toFixed(2))
         $('#lblbalance').val(parseFloat(parseFloat($('#txttotal').val()) - parseFloat($('#txtpayamount').val())).toFixed(2))
