@@ -100,7 +100,7 @@ function saveprocess() {
             success: function (result) {
                 if (result.Status == true) {
                     toastr.success(result.Message);
-                    var win = window.open('http://localhost:26376/Report/SalesReport/salereport.aspx?sysid=' + result.Id + '&type=il', '_blank');
+                    var win = window.open('http://localhost/Report/SalesReport/salereport.aspx?sysid=' + result.Id + '&type=il', '_blank');
 
                     // LoadData();
                     cleardata();
@@ -859,7 +859,7 @@ function Cal_Balance() {
     $('#tblpayment tbody tr').each(function (i, ele) {
         total = parseFloat(total) + parseFloat($('.payamount', this).val());
     })
-    alert($('#txttotal').val())
+   
 
     if (parseFloat($('#txttotal').val() == 'NaN' ? 0 : $('#txttotal').val()) >= parseFloat(total)) {
 

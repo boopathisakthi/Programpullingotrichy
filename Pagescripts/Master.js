@@ -567,14 +567,13 @@ function Parameterbinddata(tablename, uri, data, FilterParameter) {
 function Parameterbindwithviewdata(tablename, uri, data, FilterParameter) {
 
     var datacount = data.length;
- 
     for (i = 0; i < datacount; i++) {
         data[i] = eval({ "data": data[i], "name": data[i], "autoWidth": true });
     }
    
     data[datacount] = eval({
         "data": "sysid", "width": "50px", "render": function (data) {
-            return '<a style="padding:1px;" class="btn btn-icon waves-effect btn-white m-b-5" href="#" onclick="return getdetails(' + data + ')"><i style="color:teal;" class="far fa-eye"></i>  </a>';
+            return '<a style="padding:1px;" class="btn btn-icon waves-effect btn-white m-b-5" href="#" onclick="return getdetails(\'' + data + '\')"><i style="color:teal;" class="far fa-eye"></i>  </a>';
         }
     });
 
